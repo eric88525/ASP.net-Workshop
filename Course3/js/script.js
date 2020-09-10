@@ -32,13 +32,24 @@ $(document).ready(function () {
         });
         $("#bought_datepicker").kendoDatePicker();
 
-        $("#add_button").kendoButton({
+     /*   $("#add_button").kendoButton({
             click: addButtonOnclick
-        });
+        });*/
 
         $("#show_button").kendoButton({
             click: showButtonOnclick
         });
+
+        var validator = $("#myform").kendoValidator().data("kendoValidator");
+
+        // Validate the input when the Save button is clicked
+        $("#add_button").on("click", function () {
+            if (validator.validate()) {
+                // If the form is valid, the Validator will return true
+                addButtonOnclick();
+            }
+        });
+
 
         $("#book_grid").kendoGrid({
             dataSource: {
@@ -147,18 +158,29 @@ $(document).ready(function () {
 
         });
 
-       $('#book-filter').on("input",function(){
+        $('#book-filter').on("input", function () {
             console.log('change');
             var grid = $('#book_grid').data('kendoGrid');
             var field = 'BookName';
             var operator = 'contains';
             var value = this.value;
             grid.dataSource.filter({
-              field: field,
-              operator: operator,
-              value: value
+                field: field,
+                operator: operator,
+                value: value
             });
-       });
+        });
+
+   /*     $("#book_name").kendoAutoComplete({
+            dataSource: data,
+            separator: ", "
+        });
+
+        $("#book_author").kendoAutoComplete({
+            dataSource: data,
+            separator: ", "
+        });*/
+
 
     }
 
@@ -186,10 +208,10 @@ function addButtonOnclick() {
     var date = kendo.toString($("#bought_datepicker").data("kendoDatePicker").value(), "yyyy-MM-dd");
     var pub = "I dont know ok?"
 
-    if (bookName == "" || bookAuthor == "") {
+  /*  if (bookName == "" || bookAuthor == "") {
         window.alert("book name / bookAuthor empty!");
         return;
-    }
+    }*/
 
     var addData = {
         "BookId": Number(id + 1),
