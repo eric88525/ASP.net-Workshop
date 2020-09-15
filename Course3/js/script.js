@@ -32,9 +32,9 @@ $(document).ready(function () {
         });
         $("#bought_datepicker").kendoDatePicker();
 
-     /*   $("#add_button").kendoButton({
-            click: addButtonOnclick
-        });*/
+        /*   $("#add_button").kendoButton({
+               click: addButtonOnclick
+           });*/
 
         $("#show_button").kendoButton({
             click: showButtonOnclick
@@ -47,6 +47,7 @@ $(document).ready(function () {
             if (validator.validate()) {
                 // If the form is valid, the Validator will return true
                 addButtonOnclick();
+
             }
         });
 
@@ -144,16 +145,6 @@ $(document).ready(function () {
                     title: " ",
                     width: "120px"
                 }
-
-                /*   ,{
-                       command: {
-                           field: "BookId",
-                           text: "刪除",
-                           click: deleteBook
-                       },
-                       title: " ",
-                       width: "120px"
-                   }*/
             ]
 
         });
@@ -170,18 +161,37 @@ $(document).ready(function () {
                 value: value
             });
         });
+        ///
+        var myWindow = $("#window"),
+            undo = $("#window_button");
 
-   /*     $("#book_name").kendoAutoComplete({
-            dataSource: data,
-            separator: ", "
+        undo.click(function () {
+            myWindow.data("kendoWindow").open();
+            undo.fadeOut();
         });
 
-        $("#book_author").kendoAutoComplete({
-            dataSource: data,
-            separator: ", "
-        });*/
+        function onClose() {
+            undo.fadeIn();
+        }
+
+        myWindow.kendoWindow({
+            width: '500px',
+            height: 'auto',
+            title: "About Alvar Aalto",
+            visible: false,
+            actions: [
+                "Pin",
+                "Minimize",
+                "Maximize",
+                "Close"
+            ],
+            close: onClose
+        }).data("kendoWindow").center().open();
 
 
+
+
+        ///
     }
 
 
@@ -208,10 +218,10 @@ function addButtonOnclick() {
     var date = kendo.toString($("#bought_datepicker").data("kendoDatePicker").value(), "yyyy-MM-dd");
     var pub = "I dont know ok?"
 
-  /*  if (bookName == "" || bookAuthor == "") {
-        window.alert("book name / bookAuthor empty!");
-        return;
-    }*/
+    /*  if (bookName == "" || bookAuthor == "") {
+          window.alert("book name / bookAuthor empty!");
+          return;
+      }*/
 
     var addData = {
         "BookId": Number(id + 1),
