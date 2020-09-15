@@ -1,6 +1,7 @@
 var bookDataFromLocalStorage = [];
 
 $(document).ready(function () {
+
         loadBookData();
         var data = [{
                 text: "資料庫",
@@ -23,6 +24,9 @@ $(document).ready(function () {
                 value: "language"
             }
         ]
+        $("#bought_datepicker").kendoDatePicker(
+            { format:"yyyy/MM/dd"}
+         );
         $("#book_category").kendoDropDownList({
             dataTextField: "text",
             dataValueField: "value",
@@ -30,7 +34,7 @@ $(document).ready(function () {
             index: 0,
             change: onChange
         });
-        $("#bought_datepicker").kendoDatePicker();
+      
 
         /*   $("#add_button").kendoButton({
                click: addButtonOnclick
@@ -170,9 +174,6 @@ $(document).ready(function () {
             undo.fadeOut();
         });
 
-        function onClose() {
-            undo.fadeIn();
-        }
 
         myWindow.kendoWindow({
             width: '500px',
@@ -186,12 +187,11 @@ $(document).ready(function () {
                 "Close"
             ],
             close: onClose
-        }).data("kendoWindow").center().open();
-
-
-
-
-        ///
+        }).data("kendoWindow").center();
+        
+        function onClose() {
+            undo.fadeIn();
+        }
     }
 
 
