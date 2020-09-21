@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -14,6 +13,7 @@
         .win {
             min-width: 400px;
         }
+        
     </style>
 </head>
 
@@ -44,19 +44,21 @@
                         </li>
                         <li>
                             <label>書名</label>
-                            <input required="" validationMessage="Book Name is required" id="book_name" type="text"
+                            <!--name-->
+                            <input name =  "bookname" required validationMessage="Book Name is required" id="book_name" type="text"
                                 class="k-textbox"  style="width: 100%;"  />
 
                         </li>
 
                         <li>
                             <label>作者</label>
-                            <input required="" validationMessage="Author Name is required" id="book_author" type="text"
+                            <input  name =  "authername"   required validationMessage="Author Name is required" id="book_author" type="text"
                                 class="k-textbox" style="width: 100%;" />
 
                         </li>
                         <li>
                             <label>購買日期</label>
+                                                            <!--today-->
                             <input id="bought_datepicker" value="2011/10/10" title="datepicker" style="width: 100%" />
                             <!-- <input type="text" class="k-textbox" style="width: 100%;" /> -->
                         </li>

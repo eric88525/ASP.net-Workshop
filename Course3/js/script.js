@@ -27,7 +27,10 @@ $(document).ready(function () {
 
     // pick the book date
     $("#bought_datepicker").kendoDatePicker({
-        format: "yyyy/MM/dd"
+        //get today
+        value: new Date(),
+        format: "yyyy/MM/dd",
+        dateInput: true
     });
 
     // selete book category and change img
@@ -51,8 +54,7 @@ $(document).ready(function () {
     $("#add_button").on("click", function () {
         if (validator.validate()) {
             // If the form is valid, the Validator will return true
-            addButtonOnclick();
-
+            addButtonOnclick(); // name fix
         }
     });
 
@@ -128,8 +130,6 @@ $(document).ready(function () {
             },
             {
                 command: {
-
-                    name: "details",
                     text: "delete",
                     click: function (e) {
                         // prevent page scroll position change
@@ -162,7 +162,7 @@ $(document).ready(function () {
         });
     });
     ///
-
+    // fix name
     // click to open  window
     var myWindow = $("#window"),
         // button & window
@@ -180,6 +180,7 @@ $(document).ready(function () {
         height: 'auto',
         title: "Add new book",
         visible: false,
+        modal: true,
         actions: [
             "Pin",
             "Minimize",
@@ -204,7 +205,7 @@ function addButtonOnclick() {
     // check if the book name  exist or not
     for (let i = 0; i < bookDataFromLocalStorage.length; i++) {
         if (bookDataFromLocalStorage[i].BookName == String(bookName)) {
-            window.alert("book name duplicate!");
+            alert("book name duplicate!");
             return;
         }
     }
@@ -238,6 +239,7 @@ function loadBookData() {
 // when dropdownlist change,do this
 function onChange() {
     var data = $("#book_category").data("kendoDropDownList");
+    //id
     $(".book-image").attr("src", "image/" + data.value() + ".jpg");
     console.log(data.text());
 }
@@ -249,7 +251,6 @@ function deleteBook(e) {
     });
     bookDataFromLocalStorage.splice(book_idx, 1);
     localStorage.setItem("bookData", JSON.stringify(bookDataFromLocalStorage));
-    console.log(bookDataFromLocalStorage);
     refreshGrid();
 }
 
@@ -267,7 +268,8 @@ function showButtonOnclick() {
     var bookName = $("#book_name").val();
     var bookAuthor = $("#book_author").val();
     var date = kendo.toString($("#bought_datepicker").data("kendoDatePicker").value(), "yyyy-MM-dd");
-    var pub = "I dont know ok?"
+    //var date = $("#bought_datepicker").data("kendoDatePicker").value();
+    var pub = "I dont know ok?";
     console.log(id);
     console.log(bookCategory);
     console.log(bookName);
@@ -275,6 +277,3 @@ function showButtonOnclick() {
     console.log(date);
 }
 
-function onClick(e) {
-    kendoConsole.log("event :: click (" + $(e.event.target).closest(".k-button").attr("id") + ")");
-}
