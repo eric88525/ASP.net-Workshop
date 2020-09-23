@@ -22,10 +22,12 @@ namespace workshop4.Models
                 System.Configuration.ConfigurationManager.ConnectionStrings["DBConn"].ConnectionString.ToString();
         }
         /// <summary>
-        /// 取得codeTable的部分資料
+        /// 123
         /// </summary>
+        /// <param name="column"> abc </param>
         /// <returns></returns>
         public List<SelectListItem> GetCodeTable(string column)
+
         {
             DataTable dt = new DataTable();
             string sql = "";

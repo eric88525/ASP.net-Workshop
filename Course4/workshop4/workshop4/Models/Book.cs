@@ -38,17 +38,14 @@ namespace workshop4.Models
         //[Required(ErrorMessage = "此欄位必填")]
         public string BookPublisher { get; set; }
         [DisplayName("內容簡介")]
+        [MaxLength(1100)]
         //[Required(ErrorMessage = "此欄位必填")]
         public string BookNote { get; set; }
-
-
-
 
         // for edit
         /// <summary>
         /// 中文-英文
         /// </summary>
-        ///     
         [DisplayName("借閱人")]
         public string BookKeeperId { get; set; }  // keeper id
         public string BookAmount { get; set; }

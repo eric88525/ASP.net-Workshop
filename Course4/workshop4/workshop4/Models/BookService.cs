@@ -40,7 +40,7 @@ namespace workshop4.Models
 				cmd.Parameters.Add(new SqlParameter("@BookClassId", book.BookClassId));
 				cmd.Parameters.Add(new SqlParameter("@BookStatus", 'A'));
 
-				BookId = Convert.ToInt32(cmd.ExecuteScalar());
+				BookId = Convert.ToInt32(cmd.ExecuteNonQuery());
 				conn.Close();
 			}
 			return BookId;
@@ -95,7 +95,13 @@ namespace workshop4.Models
 
 		}
 
-
+        //boolean
+        /// <summary>
+        /// return true:success
+        /// </summary>
+        /// <param name="book"></param>
+        /// <returns></returns>
+        /// return bool
         public int UpdateBook(Book book)
         {
             int success = 0;
@@ -145,6 +151,8 @@ namespace workshop4.Models
 		{
 			try
             {
+
+
                 string sql = @"DELETE FROM BOOK_DATA WHERE BOOK_ID = @BookId";
                 using (SqlConnection conn = new SqlConnection(this.GetDBConnectionString()))
                 {
@@ -195,7 +203,7 @@ namespace workshop4.Models
         private Book MapBookDataToEdit(DataTable bookData)
         {
             Book book = new Book();
-
+            string test = bookData.Rows[0]["BookId"].ToString();
             foreach (DataRow row in bookData.Rows)
             {
                 book.BookId = row["BookId"].ToString();
@@ -228,7 +236,7 @@ namespace workshop4.Models
                             bd.BOOK_STATUS AS BookStatus,
                             bd.BOOK_KEEPER AS KeeperId
                             FROM BOOK_DATA bd
-                            WHERE bd.BOOK_ID=@BookId ";
+                            WHERE bd.BOOK_ID=@BookId ";//
             using (SqlConnection conn = new SqlConnection(this.GetDBConnectionString()))
             {
                 conn.Open();

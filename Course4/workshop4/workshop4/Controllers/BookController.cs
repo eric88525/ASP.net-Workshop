@@ -25,6 +25,7 @@ namespace workshop4.Controllers
         [HttpGet()]
         public ActionResult InsertBook()
         {
+
             ViewBag.BookClassIdData = codeService.GetCodeTable("BookClass");
             return View();
         }
@@ -33,7 +34,7 @@ namespace workshop4.Controllers
         [HttpPost()]
         public ActionResult InsertBook(Models.Book book)
         {
-            int i = 10;
+           // 時間欄位要填
             bookService.InsertBook(book);
             /*    if (ModelState.IsValid)
                 {
@@ -86,8 +87,8 @@ namespace workshop4.Controllers
         [HttpGet()]
           public ActionResult EditBook(string bookId)
           {
-
-              if (string.IsNullOrEmpty(bookId))
+                // 判斷數字轉型ok?
+              if (string.IsNullOrEmpty(bookId) )
               {
                   return RedirectToAction("SearchBook", "Book");
                  // return View("SearchBook");
