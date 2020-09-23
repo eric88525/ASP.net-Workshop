@@ -31,7 +31,7 @@ namespace workshop4.Models
 
 
         [DataType(DataType.Date)]
-        [DisplayFormat(DataFormatString = "{0:MM/dd/yyyy}")]
+        
         public string BookBoughtDate { get; set; }
 
         [DisplayName("出版商")]

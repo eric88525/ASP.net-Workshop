@@ -7,7 +7,7 @@
 <h2>EditBook</h2>
 
 
-@using (Html.BeginForm())
+@using (Html.BeginForm("EditBook","Book",FormMethod.Post))
 {
     @Html.AntiForgeryToken()
     
@@ -39,7 +39,7 @@
             @Html.LabelFor(model => model.BookBoughtDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
            
-                @Html.TextBoxFor(model => model.BookBoughtDate, new { htmlAttributes = new { @class = "form-control" ,@type="Date" } })
+                @Html.EditorFor(model => model.BookBoughtDate, new { htmlAttributes = new { @class = "form-control" ,@type="Date" } })
                 @Html.ValidationMessageFor(model => model.BookBoughtDate, "", new { @class = "text-danger" })
             </div>
         </div>

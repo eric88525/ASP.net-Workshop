@@ -21,7 +21,7 @@ namespace workshop4.Models
 		public int InsertBook(Models.Book book)
 		{
 
-			string sql = @" INSERT INTO BOOK_DATA(BOOK_NAME, BOOK_AUTHOR, BOOK_PUBLISHER, BOOK_NOTE, BOOK_BOUGHT_DATE, BOOK_CLASS_ID, BOOK_STATUS)
+			string sql = @" INSERT INTO BOOK_DATA(BOOK_NAME, BOOK_AUTHOR, BOOK_PUBLISHER, BOOK_NOTE, BOOK_BOUGHT_DATE, BOOK_CLASS_ID, BOOK_STATUS )
 			VALUES( @BookName, @BookAuthor , @BookPublisher, @BookNote , @BookBoughtDate, @BookClassId, @BookStatus)";
 
 			int BookId;
@@ -54,7 +54,7 @@ namespace workshop4.Models
 	                            DISTINCT bd.BOOK_ID AS BookId
                                ,bc.BOOK_CLASS_NAME AS BookClass
                                ,bd.BOOK_NAME AS BookName
-                               ,CONVERT(VARCHAR(12), bd.BOOK_BOUGHT_DATE, 111) AS BookBoughtDate
+                               ,FORMAT(bd.BOOK_BOUGHT_DATE ,'yyyy-MM-dd') AS BookBoughtDate
                                ,bc1.CODE_NAME AS BookStatus
                                ,mm.USER_ENAME AS UserEName
 
@@ -178,7 +178,7 @@ namespace workshop4.Models
                             bd.BOOK_AUTHOR AS BookAuthor,
                             bd.BOOK_PUBLISHER AS BookPublisher,
                             bd.BOOK_NOTE AS BookNote,
-                            convert(  VARCHAR,bd.BOOK_BOUGHT_DATE,111) AS BookBoughtDate,
+                            FORMAT(bd.BOOK_BOUGHT_DATE ,'yyyy-MM-dd') AS BookBoughtDate,
                             bd.BOOK_CLASS_ID AS BookClassId,
                             bd.BOOK_STATUS AS BookStatus,
                             bd.BOOK_KEEPER AS KeeperId

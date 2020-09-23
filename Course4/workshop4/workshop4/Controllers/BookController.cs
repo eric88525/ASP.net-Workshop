@@ -83,7 +83,7 @@ namespace workshop4.Controllers
             
         }
 
-        [HttpGet]
+        [HttpGet()]
         public ActionResult EditBook(string bookId)
         {
 
@@ -104,14 +104,27 @@ namespace workshop4.Controllers
             return View(book);
         }
 
-     /*   [HttpPost]
-        public ActionResult EditBook(string bookId)
+        [HttpPost()]
+        public ActionResult EditBook(Book book)
         {
 
-            Models.Book book = new Book();
-            book.BookAuthor = "123456";
 
-            return View(book);
-        }*/
+            ViewBag.BookStatusData = codeService.GetCodeTable("BookStatus");
+            ViewBag.BookClassIdData = codeService.GetCodeTable("BookClass");
+            ViewBag.KeeperFullNameData = codeService.GetCodeTable("KeeperFullName");
+
+
+            return  View(book);
+        }
+
+        /*   [HttpPost]
+           public ActionResult EditBook(string bookId)
+           {
+
+               Models.Book book = new Book();
+               book.BookAuthor = "123456";
+
+               return View(book);
+           }*/
     }
 }
