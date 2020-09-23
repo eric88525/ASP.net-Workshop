@@ -23,7 +23,7 @@ namespace workshop4.Models
         public string BookClassId { get; set; }
 
         [DisplayName("作者")]
-        [Required(ErrorMessage = "此欄位必填")]
+       // [Required(ErrorMessage = "此欄位必填")]
         public string BookAuthor { get; set; }
 
         [DisplayName("購書日期")]
@@ -35,10 +35,10 @@ namespace workshop4.Models
         public string BookBoughtDate { get; set; }
 
         [DisplayName("出版商")]
-        [Required(ErrorMessage = "此欄位必填")]
+        //[Required(ErrorMessage = "此欄位必填")]
         public string BookPublisher { get; set; }
         [DisplayName("內容簡介")]
-        [Required(ErrorMessage = "此欄位必填")]
+        //[Required(ErrorMessage = "此欄位必填")]
         public string BookNote { get; set; }
 
 

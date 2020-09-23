@@ -114,6 +114,8 @@ namespace workshop4.Controllers
             ViewBag.KeeperFullNameData = codeService.GetCodeTable("KeeperFullName");
 
 
+            int success = bookService.UpdateBook(book);
+
             return  View(book);
         }
 

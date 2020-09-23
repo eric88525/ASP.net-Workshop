@@ -4,6 +4,8 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using System.Web.Management;
+using System.Web.Mvc;
 
 namespace workshop4.Models
 {
@@ -31,9 +33,9 @@ namespace workshop4.Models
 				SqlCommand cmd = new SqlCommand(sql, conn);
 
 				cmd.Parameters.Add(new SqlParameter("@BookName", book.BookName));
-				cmd.Parameters.Add(new SqlParameter("@BookAuthor", book.BookAuthor));
-				cmd.Parameters.Add(new SqlParameter("@BookPublisher", book.BookPublisher));
-				cmd.Parameters.Add(new SqlParameter("@BookNote", book.BookNote));
+				cmd.Parameters.Add(new SqlParameter("@BookAuthor", book.BookAuthor == null ? string.Empty : book.BookAuthor));
+				cmd.Parameters.Add(new SqlParameter("@BookPublisher", book.BookPublisher == null ? string.Empty : book.BookPublisher));
+				cmd.Parameters.Add(new SqlParameter("@BookNote", book.BookNote == null ? string.Empty : book.BookNote));
 				cmd.Parameters.Add(new SqlParameter("@BookBoughtDate", book.BookBoughtDate));
 				cmd.Parameters.Add(new SqlParameter("@BookClassId", book.BookClassId));
 				cmd.Parameters.Add(new SqlParameter("@BookStatus", 'A'));
@@ -93,10 +95,53 @@ namespace workshop4.Models
 
 		}
 
+
+        public int UpdateBook(Book book)
+        {
+            int success = 0;
+
+
+            string sql = @"UPDATE BOOK_DATA
+                            SET BOOK_NAME = @BookName
+                               ,BOOK_AUTHOR = @BookAuthor
+                               ,BOOK_PUBLISHER = @BookPublisher
+                               ,BOOK_NOTE = @BookNote
+                               ,BOOK_BOUGHT_DATE = @BookBoughtDate
+                               ,BOOK_CLASS_ID = @BookClassId
+                               ,BOOK_STATUS = @BookStatus
+                               ,BOOK_KEEPER = @BookKeeperId
+                            WHERE BOOK_ID = @BookId;
+";
+
+            using (SqlConnection conn = new SqlConnection(this.GetDBConnectionString()))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.Add(new SqlParameter("@BookName", book.BookName == null ? string.Empty : book.BookName));
+                cmd.Parameters.Add(new SqlParameter("@BookAuthor", book.BookAuthor == null ? string.Empty : book.BookAuthor));
+                cmd.Parameters.Add(new SqlParameter("@BookPublisher", book.BookPublisher == null ? string.Empty : book.BookPublisher));
+                cmd.Parameters.Add(new SqlParameter("@BookNote", book.BookNote == null ? string.Empty : book.BookNote));
+                cmd.Parameters.Add(new SqlParameter("@BookBoughtDate", book.BookBoughtDate == null ? string.Empty : book.BookBoughtDate));
+                cmd.Parameters.Add(new SqlParameter("@BookClassId", book.BookClassId == null ? string.Empty : book.BookClassId));
+                cmd.Parameters.Add(new SqlParameter("@BookStatus", book.BookStatus == null ? string.Empty : book.BookStatus));
+                cmd.Parameters.Add(new SqlParameter("@BookKeeperId", book.BookKeeperId == null ? string.Empty : book.BookKeeperId));
+                cmd.Parameters.Add(new SqlParameter("@BookId", book.BookId));
+
+                success = Convert.ToInt32(cmd.ExecuteScalar());
+                conn.Close();
+            }
+
+
+            return success;
+
+        }
+
+
 		/// <summary>
 		/// 刪除客戶
 		/// </summary>
-		public void DeleteBookById(string BookId)
+		[HttpPost()]
+		public void DeleteBookById(string bookId)
 		{
 			try
             {
@@ -105,7 +150,7 @@ namespace workshop4.Models
                 {
                     conn.Open();
                     SqlCommand cmd = new SqlCommand(sql, conn);
-                    cmd.Parameters.Add(new SqlParameter("@BookId", BookId));
+                    cmd.Parameters.Add(new SqlParameter("@BookId", bookId));
                     cmd.ExecuteNonQuery();
                     conn.Close();
                 }

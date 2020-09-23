@@ -87,10 +87,11 @@
                 <td>@item.UserEName</td>
                 <td>
                     <a class="btnEdit" href="#">編輯</a>
-                    <input class="hidEmployeeId"  value='@item.BookId' />
+                   
 
                     <a class="btnDelete" href="#">刪除</a>
-                    
+
+                    <input id="bookId" type="hidden" value='@item.BookId' />
 
                 </td>
 
@@ -117,11 +118,11 @@
     $(document).ready(function () {
         $(".btnDelete").click(function (e) {
             e.preventDefault();
-            var tr = $(this).closest('tr')
+            var tr = $(this).closest('tr');
             $.ajax({
                 type: "POST",
                 url: "/Book/DeleteBook",
-                data: "bookId=" + $(this).next().val(),
+                data: "bookId=" + $("#bookId").val(),
                 dataType: "json",
                 success: function (response) {
                     $(tr).remove();
@@ -134,7 +135,7 @@
 
         $(".btnEdit").click(function (e) {
             
-            window.location.href = "/Book/EditBook/?bookId=" + $(this).next().val();
+            window.location.href = "/Book/EditBook/?bookId=" + $("#bookId").val();
           
         });
 
