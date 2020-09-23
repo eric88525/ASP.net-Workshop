@@ -50,7 +50,6 @@ namespace workshop4.Models
         /// </summary>
         ///     
         [DisplayName("借閱人")]
-        [Required(ErrorMessage = "此欄位必填")]
         public string BookKeeperId { get; set; }  // keeper id
         public string BookAmount { get; set; }
         public string CreateDate { get; set; }

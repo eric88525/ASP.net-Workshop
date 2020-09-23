@@ -19,7 +19,7 @@ namespace workshop4.Controllers
         public ActionResult Index()
         {
             return RedirectToAction("SearchBook", "Book");
-          //  return View();
+            //  return View();
         }
 
         [HttpGet()]
@@ -35,11 +35,11 @@ namespace workshop4.Controllers
         {
             int i = 10;
             bookService.InsertBook(book);
-        /*    if (ModelState.IsValid)
-            {
-       
-                TempData["message"] = "存檔成功";
-            }*/
+            /*    if (ModelState.IsValid)
+                {
+
+                    TempData["message"] = "存檔成功";
+                }*/
             ViewBag.BookClassIdData = codeService.GetCodeTable("BookClass");
             return View(book);
         }
@@ -50,7 +50,7 @@ namespace workshop4.Controllers
             ViewBag.BookClassData = codeService.GetCodeTable("BookClass");
             ViewBag.BookKeeperData = codeService.GetCodeTable("UserName");
             ViewBag.BookStatusData = codeService.GetCodeTable("BookStatus");
-           
+
             return View("SearchBook");
         }
 
@@ -75,34 +75,34 @@ namespace workshop4.Controllers
                 bookService.DeleteBookById(bookId);
                 return this.Json(true);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
 
                 return this.Json(false);
             }
-            
+
         }
 
         [HttpGet()]
-        public ActionResult EditBook(string bookId)
-        {
+          public ActionResult EditBook(string bookId)
+          {
 
-            if (string.IsNullOrEmpty(bookId))
-            {
-                return RedirectToAction("SearchBook", "Book");
-               // return View("SearchBook");
-            }
+              if (string.IsNullOrEmpty(bookId))
+              {
+                  return RedirectToAction("SearchBook", "Book");
+                 // return View("SearchBook");
+              }
 
-            Models.Book book = new Book();
-            book = bookService.GetBookEditDataById(bookId);
-            ViewBag.BookStatusData = codeService.GetCodeTable("BookStatus");
-            ViewBag.BookClassIdData = codeService.GetCodeTable("BookClass");
-            ViewBag.KeeperFullNameData = codeService.GetCodeTable("KeeperFullName");
+              Models.Book book = new Book();
+              book = bookService.GetBookEditDataById(bookId);
+              ViewBag.BookStatusData = codeService.GetCodeTable("BookStatus");
+              ViewBag.BookClassIdData = codeService.GetCodeTable("BookClass");
+              ViewBag.KeeperFullNameData = codeService.GetCodeTable("KeeperFullName");
 
 
 
-            return View(book);
-        }
+              return View(book);
+          }
 
         [HttpPost()]
         public ActionResult EditBook(Book book)
@@ -116,7 +116,7 @@ namespace workshop4.Controllers
 
             int success = bookService.UpdateBook(book);
 
-            return  View(book);
+            return View(book);
         }
 
         /*   [HttpPost]

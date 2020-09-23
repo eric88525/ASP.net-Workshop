@@ -86,8 +86,8 @@
 
                 <td>@item.UserEName</td>
                 <td>
-                    <a class="btnEdit" href="#">編輯</a>
-                   
+                  
+                    @Html.ActionLink("編輯", "EditBook", new { bookId = item.BookId})
 
                     <a class="btnDelete" href="#">刪除</a>
 
@@ -116,29 +116,31 @@
 
 <script type="text/javascript">
     $(document).ready(function () {
+
         $(".btnDelete").click(function (e) {
-            e.preventDefault();
-            var tr = $(this).closest('tr');
-            $.ajax({
-                type: "POST",
-                url: "/Book/DeleteBook",
-                data: "bookId=" + $("#bookId").val(),
-                dataType: "json",
-                success: function (response) {
-                    $(tr).remove();
-                }, error: function (error) {
-                    alert("系統發生錯誤");
-                }
-            });
-            return false;
-        });
 
-        $(".btnEdit").click(function (e) {
-            
-            window.location.href = "/Book/EditBook/?bookId=" + $("#bookId").val();
-          
-        });
+            if (confirm("是否刪除?") == true) {
 
+                e.preventDefault();
+                var tr = $(this).closest('tr');
+                $.ajax({
+                    type: "POST",
+                    url: "/Book/DeleteBook",
+                    data: "bookId=" + $("#bookId").val(),
+                    dataType: "json",
+                    success: function (response) {
+                        $(tr).remove();
+                    }, error: function (error) {
+                        alert("系統發生錯誤");
+                    }
+                });
+
+            } else {
+
+                alert("取消刪除");
+            }
+
+        });
 
 
     });
