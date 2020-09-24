@@ -4,7 +4,7 @@
     ViewBag.Title = "InsertBook";
 }
 
-<h2>InsertBook</h2>
+<h2>新增書籍</h2>
 
 
 @using (Html.BeginForm("InsertBook", "Book", FormMethod.Post))
@@ -12,7 +12,7 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>Book</h4>
+        <h4></h4>
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -87,6 +87,15 @@
 <div>
     @Html.ActionLink("前往查詢書籍", "SearchBook")
 </div>
+
+@if (TempData["message"] != null)
+{
+    <script type="text/javascript">
+        var message = @Html.Raw(Json.Encode(TempData["message"]));
+        alert(message);
+    </script>
+}
+
 <!--
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>

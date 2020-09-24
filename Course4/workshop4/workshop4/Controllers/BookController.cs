@@ -35,13 +35,14 @@ namespace workshop4.Controllers
         [HttpPost()]
         public ActionResult InsertBook(Models.Book book)
         {
-            // 時間欄位要填
-            bookService.InsertBook(book);
-            /*    if (ModelState.IsValid)
-                {
+            
 
-                    TempData["message"] = "存檔成功";
-                }*/
+            // 時間欄位要填
+            if (ModelState.IsValid)
+            {
+                bookService.InsertBook(book);
+                TempData["message"] = "存檔成功";
+            }
             ViewBag.BookClassIdData = codeService.GetCodeTable("BookClass");
             return View(book);
         }
@@ -134,7 +135,7 @@ namespace workshop4.Controllers
             ViewBag.KeeperFullNameData = codeService.GetCodeTable("KeeperFullName");
 
 
-            int success = bookService.UpdateBook(book);
+            Boolean success = bookService.UpdateBook(book);
 
             return View(book);
         }
@@ -143,8 +144,28 @@ namespace workshop4.Controllers
         [HttpGet()]
         public ActionResult CheckBookRecord(string bookId)
         {
+            int number;
+            // 判斷數字轉型ok?
+            if (string.IsNullOrEmpty(bookId) || !Int32.TryParse(bookId, out number))
+            {
+                TempData["message"] = "BookId not correct";
+                return RedirectToAction("SearchBook", "Book");
+ 
+            }
 
-            int i = 0;
+            try
+            {
+                ViewBag.RecordResult = bookService.GetBookRecordById(bookId);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return View(SearchBook());
+                throw;
+            }
+
+           
+
             return View();
         }
     }

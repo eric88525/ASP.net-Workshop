@@ -9,51 +9,51 @@ using System.Web.Mvc;
 
 namespace workshop4.Models
 {
-	public class BookService
-	{
+    public class BookService
+    {
 
-		private string GetDBConnectionString()
-		{
-            
-			return
-				System.Configuration.ConfigurationManager.ConnectionStrings["DBConn"].ConnectionString.ToString();
-		}
+        private string GetDBConnectionString()
+        {
+
+            return
+                System.Configuration.ConfigurationManager.ConnectionStrings["DBConn"].ConnectionString.ToString();
+        }
 
 
 
-		public int InsertBook(Models.Book book)
-		{
+        public int InsertBook(Models.Book book)
+        {
 
-			string sql = @" INSERT INTO BOOK_DATA(BOOK_NAME, BOOK_AUTHOR, BOOK_PUBLISHER, BOOK_NOTE, BOOK_BOUGHT_DATE, BOOK_CLASS_ID, BOOK_STATUS )
+            string sql = @" INSERT INTO BOOK_DATA(BOOK_NAME, BOOK_AUTHOR, BOOK_PUBLISHER, BOOK_NOTE, BOOK_BOUGHT_DATE, BOOK_CLASS_ID, BOOK_STATUS )
 			VALUES( @BookName, @BookAuthor , @BookPublisher, @BookNote , @BookBoughtDate, @BookClassId, @BookStatus)";
 
-			int BookId;
-			using (SqlConnection conn = new SqlConnection(this.GetDBConnectionString()))
-			{
-				conn.Open();
-				SqlCommand cmd = new SqlCommand(sql, conn);
+            int BookId;
+            using (SqlConnection conn = new SqlConnection(this.GetDBConnectionString()))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(sql, conn);
 
-				cmd.Parameters.Add(new SqlParameter("@BookName", book.BookName));
-				cmd.Parameters.Add(new SqlParameter("@BookAuthor", book.BookAuthor == null ? string.Empty : book.BookAuthor));
-				cmd.Parameters.Add(new SqlParameter("@BookPublisher", book.BookPublisher == null ? string.Empty : book.BookPublisher));
-				cmd.Parameters.Add(new SqlParameter("@BookNote", book.BookNote == null ? string.Empty : book.BookNote));
-				cmd.Parameters.Add(new SqlParameter("@BookBoughtDate", book.BookBoughtDate));
-				cmd.Parameters.Add(new SqlParameter("@BookClassId", book.BookClassId));
-				cmd.Parameters.Add(new SqlParameter("@BookStatus", 'A'));
+                cmd.Parameters.Add(new SqlParameter("@BookName", book.BookName));
+                cmd.Parameters.Add(new SqlParameter("@BookAuthor", book.BookAuthor == null ? string.Empty : book.BookAuthor));
+                cmd.Parameters.Add(new SqlParameter("@BookPublisher", book.BookPublisher == null ? string.Empty : book.BookPublisher));
+                cmd.Parameters.Add(new SqlParameter("@BookNote", book.BookNote == null ? string.Empty : book.BookNote));
+                cmd.Parameters.Add(new SqlParameter("@BookBoughtDate", book.BookBoughtDate));
+                cmd.Parameters.Add(new SqlParameter("@BookClassId", book.BookClassId));
+                cmd.Parameters.Add(new SqlParameter("@BookStatus", 'A'));
 
-				BookId = Convert.ToInt32(cmd.ExecuteNonQuery());
-				conn.Close();
-			}
-			return BookId;
-		}
-		/// <summary>
-		/// 依照條件取得book資料
-		/// </summary>
-		/// <returns></returns>
-		public List<Models.Book> GetBookByCondtioin(Models.BookArgs arg)
-		{
-			DataTable dt = new DataTable();
-			string sql = @"SELECT
+                BookId = Convert.ToInt32(cmd.ExecuteNonQuery());
+                conn.Close();
+            }
+            return BookId;
+        }
+        /// <summary>
+        /// 依照條件取得book資料
+        /// </summary>
+        /// <returns></returns>
+        public List<Models.Book> GetBookByCondtioin(Models.BookArgs arg)
+        {
+            DataTable dt = new DataTable();
+            string sql = @"SELECT
 	                        bd.BOOK_ID AS BookId
                            ,bc.BOOK_CLASS_NAME AS BookClass
                            ,bd.BOOK_NAME AS BookName
@@ -75,23 +75,23 @@ namespace workshop4.Models
 						AND (USER_ENAME = @BookKeeper  OR  @BookKeeper='')
 						AND (CODE_ID = @BookStatus OR  @BookStatus='')";
 
-			using (SqlConnection conn = new SqlConnection(this.GetDBConnectionString()))
-			{
-				conn.Open();
-				SqlCommand cmd = new SqlCommand(sql, conn);
-				cmd.Parameters.Add(new SqlParameter("@BookClassId", arg.BookClassId == null ? string.Empty : arg.BookClassId));
-				cmd.Parameters.Add(new SqlParameter("@BookName", arg.BookName == null ? string.Empty : arg.BookName));
-				cmd.Parameters.Add(new SqlParameter("@BookKeeper", arg.BookKeeper == null ? string.Empty : arg.BookKeeper));
-				cmd.Parameters.Add(new SqlParameter("@BookStatus", arg.BookStatus == null ? string.Empty : arg.BookStatus));
+            using (SqlConnection conn = new SqlConnection(this.GetDBConnectionString()))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.Add(new SqlParameter("@BookClassId", arg.BookClassId == null ? string.Empty : arg.BookClassId));
+                cmd.Parameters.Add(new SqlParameter("@BookName", arg.BookName == null ? string.Empty : arg.BookName));
+                cmd.Parameters.Add(new SqlParameter("@BookKeeper", arg.BookKeeper == null ? string.Empty : arg.BookKeeper));
+                cmd.Parameters.Add(new SqlParameter("@BookStatus", arg.BookStatus == null ? string.Empty : arg.BookStatus));
 
 
-				SqlDataAdapter sqlAdapter = new SqlDataAdapter(cmd);
-				sqlAdapter.Fill(dt);
-				conn.Close();
-			}
-			return this.MapBookDataToList(dt);
+                SqlDataAdapter sqlAdapter = new SqlDataAdapter(cmd);
+                sqlAdapter.Fill(dt);
+                conn.Close();
+            }
+            return this.MapBookDataToList(dt);
 
-		}
+        }
 
         //boolean
         /// <summary>
@@ -100,7 +100,7 @@ namespace workshop4.Models
         /// <param name="book"></param>
         /// <returns></returns>
         /// return bool
-        public int UpdateBook(Book book)
+        public Boolean UpdateBook(Book book)
         {
             int success = 0;
 
@@ -135,19 +135,26 @@ namespace workshop4.Models
                 conn.Close();
             }
 
+            if (success != 0)
+            {
+                return true;
 
-            return success;
+            }
+            else
+            {
+                return false;
+            }
 
         }
 
 
-		/// <summary>
-		/// 刪除客戶
-		/// </summary>
-		[HttpPost()]
-		public void DeleteBookById(string bookId)
-		{
-			try
+        /// <summary>
+        /// delete book by id
+        /// </summary>
+        [HttpPost()]
+        public void DeleteBookById(string bookId)
+        {
+            try
             {
 
 
@@ -163,40 +170,42 @@ namespace workshop4.Models
 
             }
 
-			catch (Exception ex)
+            catch (Exception ex)
             {
                 throw ex;
             }
-		}
+        }
 
-		/// <summary>
-		/// Map資料進List
-		/// </summary>
-		/// <param name="employeeData"></param>
-		/// <returns></returns>
+        /// <summary>
+        /// Map資料進List
+        /// </summary>
+        /// <param name="employeeData"></param>
+        /// <returns></returns>
 
-		private List<Models.Book> MapBookDataToList(DataTable bookData)
-		{
-			List<Models.Book> result = new List<Book>();
-			foreach (DataRow row in bookData.Rows)
-			{
-				result.Add(new Book()
-				{
+        private List<Models.Book> MapBookDataToList(DataTable bookData)
+        {
+            List<Models.Book> result = new List<Book>();
+            foreach (DataRow row in bookData.Rows)
+            {
+                result.Add(new Book()
+                {
 
-                    BookId =   row["BookId"].ToString(),
-					BookClass = row["BookClass"].ToString(),
-					BookName = row["BookName"].ToString(),
-					BookBoughtDate = row["BookBoughtDate"].ToString(),
-					BookStatus = row["BookStatus"].ToString(),
+                    BookId = row["BookId"].ToString(),
+                    BookClass = row["BookClass"].ToString(),
+                    BookName = row["BookName"].ToString(),
+                    BookBoughtDate = row["BookBoughtDate"].ToString(),
+                    BookStatus = row["BookStatus"].ToString(),
                     UserEName = row["UserEName"].ToString()
 
 
-				});
-			}
+                });
+            }
 
-			return result;
+            return result;
 
-		}
+        }
+
+
 
         private Book MapBookDataToEdit(DataTable bookData)
         {
@@ -219,6 +228,14 @@ namespace workshop4.Models
             return book;
 
         }
+
+
+
+        /// <summary>
+        /// Get book data (need to be edit) by id
+        /// </summary>
+        /// <param name="bookId"></param>
+        /// <returns></returns>
         public Book GetBookEditDataById(string bookId)
         {
 
@@ -244,13 +261,57 @@ namespace workshop4.Models
                 sqlAdapter.Fill(dt);
                 conn.Close();
             }
-            
+
 
             return this.MapBookDataToEdit(dt);
 
 
         }
 
+        /// <summary>
+        /// Get book records by bookId
+        /// </summary>
+        /// <param name="bookId"></param>
+        /// <returns></returns>
+        public List<Book> GetBookRecordById(string bookId)
+        {
 
-	}
+            DataTable dt = new DataTable();
+            string sql = @"SELECT
+	                            FORMAT(blr.LEND_DATE, 'yyyy/MM/dd') AS LendDate
+                               ,blr.KEEPER_ID AS KeeperId
+                               ,mm.USER_ENAME AS UserEName
+                               ,mm.USER_CNAME AS UserCName
+                            FROM BOOK_LEND_RECORD blr
+                            INNER JOIN MEMBER_M mm
+	                            ON blr.KEEPER_ID = mm.USER_ID
+                            WHERE blr.BOOK_ID = @bookId";
+            using (SqlConnection conn = new SqlConnection(this.GetDBConnectionString()))
+            {
+                conn.Open();
+
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.Add("@bookId", bookId);
+                SqlDataAdapter sqlAdapter = new SqlDataAdapter(cmd);
+                sqlAdapter.Fill(dt);
+                conn.Close();
+            }
+            List<Book> books = new List<Book>();
+
+            foreach (DataRow row in dt.Rows)
+            {
+                books.Add(new Book()
+                {
+                    LendDate = row["LendDate"].ToString(),
+                    BookKeeperId = row["KeeperId"].ToString(),
+                    UserEName = row["UserEName"].ToString(),
+                    UserCName = row["UserCName"].ToString()
+                }
+                );
+            }
+            return books;
+        }
+
+
+    }
 }

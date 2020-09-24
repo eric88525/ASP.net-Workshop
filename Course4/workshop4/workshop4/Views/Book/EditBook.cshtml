@@ -4,7 +4,7 @@
     ViewBag.Title = "EditBook";
 }
 
-<h2>EditBook</h2>
+<h2>編輯書籍資訊</h2>
 
 
 @using (Html.BeginForm("EditBook", "Book", FormMethod.Post))
@@ -124,7 +124,6 @@
                     }
                 });
             } else {
-
                 alert("取消刪除");
             }
 
@@ -134,11 +133,11 @@
         function BookStatusCheck() {
             var value = $("#bookStatusSelector").val();
             if (value == 'B' || value == 'C') {
+                $('#BookKeeperId').prop('disabled', false);
+            } else {
+
                 $('#BookKeeperId').prop('disabled', 'disabled');
                 $("#BookKeeperId  :selected").removeAttr("selected");
-
-            } else {
-                $('#BookKeeperId').prop('disabled', false);
             }
         }
 

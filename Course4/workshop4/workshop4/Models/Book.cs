@@ -61,13 +61,14 @@ namespace workshop4.Models
         public string BookClass { get; set; }
 
         [DisplayName("借閱狀態")]
-        [Required(ErrorMessage = "此欄位必填")]
         public string BookStatus { get; set; }
         public string UserEName { get; set; }
         public string UserCName { get; set; }
 
        
         public string UserFullName { get; set; }
+
+        public string LendDate { get; set; }
 
 
     }
