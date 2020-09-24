@@ -22,16 +22,16 @@ namespace workshop4.Models
                 System.Configuration.ConfigurationManager.ConnectionStrings["DBConn"].ConnectionString.ToString();
         }
         /// <summary>
-        /// 123
+        /// 得到下拉選單列表
         /// </summary>
-        /// <param name="column"> abc </param>
+        /// <param name="selectType"> 下拉選單種類 </param>
         /// <returns></returns>
-        public List<SelectListItem> GetCodeTable(string column)
+        public List<SelectListItem> GetCodeTable(string selectType)
 
         {
             DataTable dt = new DataTable();
             string sql = "";
-            switch (column)
+            switch (selectType)
             {
                 case "BookClass":
                     sql = @"SELECT DISTINCT bc.BOOK_CLASS_NAME AS BookClass,bc.BOOK_CLASS_ID AS BookClassId  FROM BOOK_CLASS bc";
@@ -64,21 +64,21 @@ namespace workshop4.Models
                 sqlAdapter.Fill(dt);
                 conn.Close();
             }
-            return this.MapCodeData(dt,column);
+            return this.MapCodeData(dt, selectType);
         }
         /// <summary>
         /// Maping 代碼資料
         /// </summary>
         /// <param name="dt"></param>
         /// <returns></returns>
-        private List<SelectListItem> MapCodeData(DataTable dt, string column)
+        private List<SelectListItem> MapCodeData(DataTable dt, string selectType)
         {
 
 
             string value = "";
 
 
-            switch (column)
+            switch (selectType)
             {
                 case "KeeperFullName":
                     value = "KeeperId";
@@ -91,7 +91,7 @@ namespace workshop4.Models
                     value = "BookClassId";
                     break;
                 default:
-                    value = column;
+                    value = selectType;
                     break;
 
             }
@@ -103,7 +103,7 @@ namespace workshop4.Models
             {
                 result.Add(new SelectListItem()
                 {
-                    Text = row[column].ToString(),
+                    Text = row[selectType].ToString(),
                     Value = row[value].ToString()
                 });
             }
