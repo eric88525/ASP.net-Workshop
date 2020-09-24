@@ -76,6 +76,9 @@ namespace workshop4.Controllers
         public ActionResult DeleteBook(string bookId)
         {
 
+
+
+
             if (bookService.DeleteBookById(bookId))
             {
                 
@@ -93,21 +96,24 @@ namespace workshop4.Controllers
         [HttpGet()]
         public ActionResult EditBook(string bookId)
         {
-            // 判斷數字轉型ok?
-            if (string.IsNullOrEmpty(bookId))
-            {
-                return RedirectToAction("SearchBook", "Book");
-                // return View("SearchBook");
-            }
 
             int number;
-            bool isNum = Int32.TryParse(bookId, out number);
-            if (!isNum)
+            // 判斷數字轉型ok?
+            if (string.IsNullOrEmpty(bookId) || !Int32.TryParse(bookId, out number))
             {
                 TempData["message"] = "BookId not number";
+                return RedirectToAction("SearchBook", "Book");
+             
+            }
 
+            if (!bookService.CheckBookIdExist(bookId))
+            {
+                TempData["message"] = "BookId not exist";
                 return RedirectToAction("SearchBook", "Book");
             }
+
+
+
             Models.Book book = new Book();
             try
             {
@@ -133,6 +139,7 @@ namespace workshop4.Controllers
         public ActionResult EditBook(Book book)
         {
 
+            
 
             ViewBag.BookStatusData = codeService.GetCodeTable("BookStatus");
             ViewBag.BookClassIdData = codeService.GetCodeTable("BookClass");
@@ -165,20 +172,29 @@ namespace workshop4.Controllers
  
             }
 
+            if (!bookService.CheckBookIdExist(bookId))
+            {
+                TempData["message"] = "BookId not exist";
+                return RedirectToAction("SearchBook", "Book");
+            }
+
+
+
+
+
+
             try
             {
                 ViewBag.RecordResult = bookService.GetBookRecordById(bookId);
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
-                return View(SearchBook());
-                throw;
+                TempData["message"] = "BookId not exist";
+                return RedirectToAction("SearchBook", "Book");
             }
-
-           
-
             return View();
+
         }
+
     }
 }

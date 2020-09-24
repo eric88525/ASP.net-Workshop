@@ -256,6 +256,34 @@ namespace workshop4.Models
         }
 
 
+        public Boolean CheckBookIdExist(string bookId)
+        {
+            string sql = @"SELECT 1                 
+                           FROM BOOK_DATA bd
+                           WHERE BOOK_ID = @BookId";
+
+            using (SqlConnection conn = new SqlConnection(this.GetDBConnectionString()))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(sql,conn);
+
+                cmd.Parameters.Add(new SqlParameter("@BookId", bookId));
+                int success = Convert.ToInt32(cmd.ExecuteScalar());
+                conn.Close();
+                if (success==1)
+                {
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
+
+            }
+
+
+        }
+
 
         /// <summary>
         /// Get book data (need to be edit) by id
@@ -264,6 +292,8 @@ namespace workshop4.Models
         /// <returns></returns>
         public Book GetBookEditDataById(string bookId)
         {
+
+
 
             DataTable dt = new DataTable();
             string sql = @"SELECT 
