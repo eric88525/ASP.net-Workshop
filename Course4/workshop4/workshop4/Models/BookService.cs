@@ -24,8 +24,12 @@ namespace workshop4.Models
         public int InsertBook(Models.Book book)
         {
 
-            string sql = @" INSERT INTO BOOK_DATA(BOOK_NAME, BOOK_AUTHOR, BOOK_PUBLISHER, BOOK_NOTE, BOOK_BOUGHT_DATE, BOOK_CLASS_ID, BOOK_STATUS )
-			VALUES( @BookName, @BookAuthor , @BookPublisher, @BookNote , @BookBoughtDate, @BookClassId, @BookStatus)";
+            string sql = @" INSERT INTO BOOK_DATA(BOOK_NAME, BOOK_AUTHOR, BOOK_PUBLISHER, 
+                                BOOK_NOTE, BOOK_BOUGHT_DATE, BOOK_CLASS_ID, BOOK_STATUS,   
+                                CREATE_DATE, CREATE_USER, MODIFY_DATE, MODIFY_USER )
+			                VALUES( @BookName, @BookAuthor , @BookPublisher, @BookNote ,
+                                @BookBoughtDate, @BookClassId, @BookStatus,
+                                @CreateDate , @CreateUser , @ModifyDate , @ModifyUser)";
 
             int BookId;
             using (SqlConnection conn = new SqlConnection(this.GetDBConnectionString()))
@@ -40,6 +44,11 @@ namespace workshop4.Models
                 cmd.Parameters.Add(new SqlParameter("@BookBoughtDate", book.BookBoughtDate));
                 cmd.Parameters.Add(new SqlParameter("@BookClassId", book.BookClassId));
                 cmd.Parameters.Add(new SqlParameter("@BookStatus", 'A'));
+                // about time
+                cmd.Parameters.Add(new SqlParameter("@CreateDate", DateTime.Now));
+                cmd.Parameters.Add(new SqlParameter("@CreateUser", "admin"));
+                cmd.Parameters.Add(new SqlParameter("@ModifyDate", DateTime.Now));
+                cmd.Parameters.Add(new SqlParameter("@ModifyUser", "admin"));
 
                 BookId = Convert.ToInt32(cmd.ExecuteNonQuery());
                 conn.Close();
@@ -114,6 +123,8 @@ namespace workshop4.Models
                                ,BOOK_CLASS_ID = @BookClassId
                                ,BOOK_STATUS = @BookStatus
                                ,BOOK_KEEPER = @BookKeeperId
+                               ,MODIFY_DATE = @ModifyDate
+                               ,MODIFY_USER = @ModifyUser
                             WHERE BOOK_ID = @BookId;
 ";
 
@@ -130,7 +141,8 @@ namespace workshop4.Models
                 cmd.Parameters.Add(new SqlParameter("@BookStatus", book.BookStatus == null ? string.Empty : book.BookStatus));
                 cmd.Parameters.Add(new SqlParameter("@BookKeeperId", book.BookKeeperId == null ? string.Empty : book.BookKeeperId));
                 cmd.Parameters.Add(new SqlParameter("@BookId", book.BookId));
-
+                cmd.Parameters.Add(new SqlParameter("@ModifyDate", DateTime.Now));
+                cmd.Parameters.Add(new SqlParameter("@ModifyUser", "admin"));
                 success = Convert.ToInt32(cmd.ExecuteScalar());
                 conn.Close();
             }

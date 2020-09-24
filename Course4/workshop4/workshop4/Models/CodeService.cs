@@ -47,7 +47,7 @@ namespace workshop4.Models
 
                 case "KeeperFullName":
                     sql =
-                        @"SELECT mm.USER_ID AS KeeperId,mm.USER_CNAME+'-'+mm.USER_ENAME AS KeeperFullName  FROM MEMBER_M mm";
+                        @"SELECT mm.USER_ID AS KeeperId,mm.USER_ENAME+'-'+mm.USER_CNAME AS KeeperFullName  FROM MEMBER_M mm";
                     break;
                     
                 default:
