@@ -14,6 +14,7 @@ namespace workshop4.Models
 
 		private string GetDBConnectionString()
 		{
+            
 			return
 				System.Configuration.ConfigurationManager.ConnectionStrings["DBConn"].ConnectionString.ToString();
 		}
@@ -52,26 +53,23 @@ namespace workshop4.Models
 		public List<Models.Book> GetBookByCondtioin(Models.BookArgs arg)
 		{
 			DataTable dt = new DataTable();
-			string sql = @"SELECT                           
-	                            DISTINCT bd.BOOK_ID AS BookId
-                               ,bc.BOOK_CLASS_NAME AS BookClass
-                               ,bd.BOOK_NAME AS BookName
-                               ,FORMAT(bd.BOOK_BOUGHT_DATE ,'yyyy-MM-dd') AS BookBoughtDate
-                               ,bc1.CODE_NAME AS BookStatus
-                               ,mm.USER_ENAME AS UserEName
+			string sql = @"SELECT
+	                        bd.BOOK_ID AS BookId
+                           ,bc.BOOK_CLASS_NAME AS BookClass
+                           ,bd.BOOK_NAME AS BookName
+                           ,FORMAT(bd.BOOK_BOUGHT_DATE, 'yyyy-MM-dd') AS BookBoughtDate
+                           ,bc1.CODE_NAME AS BookStatus
+                           ,mm.USER_ENAME AS UserEName
 
-                            FROM BOOK_DATA bd
-                            INNER JOIN BOOK_CLASS bc
-	                            ON bd.BOOK_CLASS_ID = bc.BOOK_CLASS_ID
-                            LEFT JOIN BOOK_CODE bc1
-	                            ON bd.BOOK_STATUS = bc1.CODE_ID
-		                            AND bc1.CODE_TYPE_DESC = '書籍狀態'
-                            LEFT JOIN MEMBER_M mm
-	                            ON bd.BOOK_KEEPER = mm.USER_ID
+                        FROM BOOK_DATA bd
+                        INNER JOIN BOOK_CLASS bc
+	                        ON bd.BOOK_CLASS_ID = bc.BOOK_CLASS_ID
+                        INNER JOIN BOOK_CODE bc1
+	                        ON bd.BOOK_STATUS = bc1.CODE_ID
+		                        AND bc1.CODE_TYPE = 'BOOK_STATUS'
+                        LEFT JOIN MEMBER_M mm
+	                        ON bd.BOOK_KEEPER = mm.USER_ID
 
-                            LEFT JOIN BOOK_LEND_RECORD blr
-	                            ON bd.BOOK_ID = blr.BOOK_ID
-                           
 						WHERE (bc.BOOK_CLASS_ID = @BookClassId OR @BookClassId='')
 						AND BOOK_NAME LIKE ('%' + @BookName + '%')
 						AND (USER_ENAME = @BookKeeper  OR  @BookKeeper='')

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Principal;
 using System.Web;
 using System.Web.Mvc;
 using workshop4.Models;
@@ -34,7 +35,7 @@ namespace workshop4.Controllers
         [HttpPost()]
         public ActionResult InsertBook(Models.Book book)
         {
-           // 時間欄位要填
+            // 時間欄位要填
             bookService.InsertBook(book);
             /*    if (ModelState.IsValid)
                 {
@@ -79,31 +80,49 @@ namespace workshop4.Controllers
             catch (Exception e)
             {
 
-                return this.Json(false);
+                return new EmptyResult();
             }
 
         }
 
         [HttpGet()]
-          public ActionResult EditBook(string bookId)
-          {
-                // 判斷數字轉型ok?
-              if (string.IsNullOrEmpty(bookId) )
-              {
-                  return RedirectToAction("SearchBook", "Book");
-                 // return View("SearchBook");
-              }
+        public ActionResult EditBook(string bookId)
+        {
+            // 判斷數字轉型ok?
+            if (string.IsNullOrEmpty(bookId))
+            {
+                return RedirectToAction("SearchBook", "Book");
+                // return View("SearchBook");
+            }
 
-              Models.Book book = new Book();
-              book = bookService.GetBookEditDataById(bookId);
-              ViewBag.BookStatusData = codeService.GetCodeTable("BookStatus");
-              ViewBag.BookClassIdData = codeService.GetCodeTable("BookClass");
-              ViewBag.KeeperFullNameData = codeService.GetCodeTable("KeeperFullName");
+            int number;
+            bool isNum = Int32.TryParse(bookId, out number);
+            if (!isNum)
+            {
+                TempData["message"] = "BookId not number";
+
+                return RedirectToAction("SearchBook", "Book");
+            }
+            Models.Book book = new Book();
+            try
+            {
+                book = bookService.GetBookEditDataById(bookId);
+            }
+            catch (Exception e)
+            {
+                TempData["message"] = "BookId not exist";
+                return RedirectToAction("SearchBook", "Book");
+            }
+
+
+            ViewBag.BookStatusData = codeService.GetCodeTable("BookStatus");
+            ViewBag.BookClassIdData = codeService.GetCodeTable("BookClass");
+            ViewBag.KeeperFullNameData = codeService.GetCodeTable("KeeperFullName");
 
 
 
-              return View(book);
-          }
+            return View(book);
+        }
 
         [HttpPost()]
         public ActionResult EditBook(Book book)
@@ -120,14 +139,13 @@ namespace workshop4.Controllers
             return View(book);
         }
 
-        /*   [HttpPost]
-           public ActionResult EditBook(string bookId)
-           {
 
-               Models.Book book = new Book();
-               book.BookAuthor = "123456";
+        [HttpGet()]
+        public ActionResult CheckBookRecord(string bookId)
+        {
 
-               return View(book);
-           }*/
+            int i = 0;
+            return View();
+        }
     }
 }

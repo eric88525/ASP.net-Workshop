@@ -75,8 +75,6 @@ namespace workshop4.Models
         {
 
 
-
-
             string value = "";
 
 

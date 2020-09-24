@@ -86,10 +86,13 @@
 
                 <td>@item.UserEName</td>
                 <td>
-                  
-                    @Html.ActionLink("編輯", "EditBook", new { bookId = item.BookId})
 
-                    <a class="btnDelete" href="#">刪除</a>
+                    @Html.ActionLink("編輯", "EditBook", new { bookId = item.BookId })
+
+                    <a id="btnDelete" href="#">刪除</a>
+
+                    @Html.ActionLink("借閱紀錄", "CheckBookRecord", new { bookId = item.BookId })
+                   
 
                     <input id="bookId" type="hidden" value='@item.BookId' />
 
@@ -113,11 +116,16 @@
 <script src="~/Scripts/jquery.validate.min.js"></script>
 <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
 
-
+@if(TempData["message"]!=null){
+    <script type="text/javascript">
+        var message = @Html.Raw(Json.Encode(TempData["message"]));
+        alert(message);
+    </script>
+}
 <script type="text/javascript">
     $(document).ready(function () {
 
-        $(".btnDelete").click(function (e) {
+        $("#btnDelete").click(function (e) {
 
             if (confirm("是否刪除?") == true) {
 
@@ -131,7 +139,7 @@
                     success: function (response) {
                         $(tr).remove();
                     }, error: function (error) {
-                        alert("此書有人借走 無法刪除");
+                        alert("此書無法刪除");
                     }
                 });
 
@@ -141,7 +149,10 @@
             }
 
         });
+        $("#btnRecord").click(function(e) {
 
+
+        });
 
     });
 </script>
