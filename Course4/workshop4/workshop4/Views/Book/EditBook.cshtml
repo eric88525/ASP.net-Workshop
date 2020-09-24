@@ -99,6 +99,15 @@
     </div>
 }
 
+@if (TempData["message"]!=null)
+{
+    <script type="text/javascript">
+        var message = @Html.Raw(Json.Encode(TempData["message"]));
+        alert(message);
+    </script>
+}
+
+
 <div>
     @Html.ActionLink("Back to List", "Index")
 </div>
@@ -132,12 +141,17 @@
 
         function BookStatusCheck() {
             var value = $("#bookStatusSelector").val();
-            if (value == 'B' || value == 'C') {
+            if (value == 'B' || value == 'C') { 
+                // 必填
                 $('#BookKeeperId').prop('disabled', false);
+                $('#BookKeeperId').prop('required', true);
+              
             } else {
-
+                // 封鎖並清除
                 $('#BookKeeperId').prop('disabled', 'disabled');
                 $("#BookKeeperId  :selected").removeAttr("selected");
+                $('#BookKeeperId').prop('required', false);
+               
             }
         }
 

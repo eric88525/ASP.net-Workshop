@@ -133,13 +133,14 @@
                     data: "bookId=" + $("#bookId").val(),
                     dataType: "json",
                     success: function (response) {
+                        alert("刪除成功");
                         $(tr).remove();
-                        location.reload();
+                       
                     }, error: function (error) {
                         alert("此書無法刪除");
                     }
                 });
-
+                location.reload();
             } else {
 
                 alert("取消刪除");

@@ -16,6 +16,7 @@ namespace workshop4.Models
 
         [DisplayName("書名")]
         [Required(ErrorMessage = "此欄位必填")]
+        [MaxLength(180)]
         public string BookName { get; set; }
 
         [DisplayName("圖書類別")]
@@ -24,18 +25,17 @@ namespace workshop4.Models
 
         [DisplayName("作者")]
         [Required(ErrorMessage = "此欄位必填")]
+        [MaxLength(28)]
         public string BookAuthor { get; set; }
 
         [DisplayName("購書日期")]
         [Required(ErrorMessage = "此欄位必填")]
-
-
         [DataType(DataType.Date)]
-        
         public string BookBoughtDate { get; set; }
 
         [DisplayName("出版商")]
         [Required(ErrorMessage = "此欄位必填")]
+        [MaxLength(18)]
         public string BookPublisher { get; set; }
         [DisplayName("內容簡介")]
         [MaxLength(1100)]

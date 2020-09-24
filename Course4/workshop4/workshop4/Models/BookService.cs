@@ -114,19 +114,25 @@ namespace workshop4.Models
             int success = 0;
 
 
-            string sql = @"UPDATE BOOK_DATA
-                            SET BOOK_NAME = @BookName
-                               ,BOOK_AUTHOR = @BookAuthor
-                               ,BOOK_PUBLISHER = @BookPublisher
-                               ,BOOK_NOTE = @BookNote
-                               ,BOOK_BOUGHT_DATE = @BookBoughtDate
-                               ,BOOK_CLASS_ID = @BookClassId
-                               ,BOOK_STATUS = @BookStatus
-                               ,BOOK_KEEPER = @BookKeeperId
-                               ,MODIFY_DATE = @ModifyDate
-                               ,MODIFY_USER = @ModifyUser
-                            WHERE BOOK_ID = @BookId;
-";
+            string sql = @"BEGIN TRY
+	                        BEGIN TRANSACTION
+	                        UPDATE BOOK_DATA
+	                        SET BOOK_NAME = @BookName
+	                           ,BOOK_AUTHOR = @BookAuthor
+	                           ,BOOK_PUBLISHER = @BookPublisher
+	                           ,BOOK_NOTE = @BookNote
+	                           ,BOOK_BOUGHT_DATE = @BookBoughtDate
+	                           ,BOOK_CLASS_ID = @BookClassId
+	                           ,BOOK_STATUS = @BookStatus
+	                           ,BOOK_KEEPER = @BookKeeperId
+	                           ,MODIFY_DATE = @ModifyDate
+	                           ,MODIFY_USER = @ModifyUser
+	                        WHERE BOOK_ID = @BookId
+	                        COMMIT TRANSACTION
+                        END TRY
+                        BEGIN CATCH
+	                        ROLLBACK TRANSACTION
+                        END CATCH";
 
             using (SqlConnection conn = new SqlConnection(this.GetDBConnectionString()))
             {
@@ -143,7 +149,7 @@ namespace workshop4.Models
                 cmd.Parameters.Add(new SqlParameter("@BookId", book.BookId));
                 cmd.Parameters.Add(new SqlParameter("@ModifyDate", DateTime.Now));
                 cmd.Parameters.Add(new SqlParameter("@ModifyUser", "admin"));
-                success = Convert.ToInt32(cmd.ExecuteScalar());
+                success = cmd.ExecuteNonQuery();
                 conn.Close();
             }
 
@@ -163,29 +169,37 @@ namespace workshop4.Models
         /// <summary>
         /// delete book by id
         /// </summary>
-        [HttpPost()]
-        public void DeleteBookById(string bookId)
+        public Boolean DeleteBookById(string bookId)
         {
-            try
+            int success=0;
+            string sql = @" BEGIN TRY
+	                                BEGIN TRANSACTION
+	                                DELETE FROM BOOK_DATA
+	                                WHERE BOOK_ID = @BookId
+	                                COMMIT TRANSACTION
+                                END TRY
+                                BEGIN CATCH
+	                                ROLLBACK TRANSACTION
+                                END CATCH";
+            using (SqlConnection conn = new SqlConnection(this.GetDBConnectionString()))
             {
-
-
-                string sql = @"DELETE FROM BOOK_DATA WHERE BOOK_ID = @BookId";
-                using (SqlConnection conn = new SqlConnection(this.GetDBConnectionString()))
-                {
-                    conn.Open();
-                    SqlCommand cmd = new SqlCommand(sql, conn);
-                    cmd.Parameters.Add(new SqlParameter("@BookId", bookId));
-                    cmd.ExecuteNonQuery();
-                    conn.Close();
-                }
-
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.Add(new SqlParameter("@BookId", bookId));
+                success = cmd.ExecuteNonQuery();
+                conn.Close();
             }
 
-            catch (Exception ex)
+            if (success > 0)
             {
-                throw ex;
+                return true;
             }
+            else
+            {
+                return false;
+            }
+
+
         }
 
         /// <summary>

@@ -31,11 +31,11 @@ namespace workshop4.Controllers
             return View();
         }
 
-
+        [ValidateInput(false)]
         [HttpPost()]
         public ActionResult InsertBook(Models.Book book)
         {
-            
+           
 
             // 時間欄位要填
             if (ModelState.IsValid)
@@ -57,6 +57,8 @@ namespace workshop4.Controllers
             return View("SearchBook");
         }
 
+
+        [ValidateInput(false)]
         [HttpPost()]
         public ActionResult SearchBook(Models.BookArgs bookArg)
         {
@@ -73,16 +75,18 @@ namespace workshop4.Controllers
         [HttpPost()]
         public ActionResult DeleteBook(string bookId)
         {
-            try
+
+            if (bookService.DeleteBookById(bookId))
             {
-                bookService.DeleteBookById(bookId);
+                
                 return this.Json(true);
             }
-            catch (Exception e)
+            else
             {
-
+                
                 return new EmptyResult();
             }
+
 
         }
 
@@ -124,7 +128,7 @@ namespace workshop4.Controllers
 
             return View(book);
         }
-
+        [ValidateInput(false)]
         [HttpPost()]
         public ActionResult EditBook(Book book)
         {
@@ -135,7 +139,15 @@ namespace workshop4.Controllers
             ViewBag.KeeperFullNameData = codeService.GetCodeTable("KeeperFullName");
 
 
-            Boolean success = bookService.UpdateBook(book);
+            if (bookService.UpdateBook(book))
+            {
+                TempData["message"] = "Update success";
+            }
+            else
+            {
+                TempData["message"] = "Update false";
+            }
+
 
             return View(book);
         }
