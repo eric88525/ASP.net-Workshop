@@ -1,0 +1,110 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+
+
+
+<p id="demo_output"></p>
+<input id="demo_input" type="text" name="name" value="" />
+<button id="btn_call_ajax">send</button>
+
+
+<select id="demo_select"></select>
+<button id="btn_demo_select">SELECT</button>
+
+<div id="demo_grid"></div>
+<button id="btn_demo_grid">GRID</button>
+
+<input id="demo_auto_input"/>
+<button id="btn_demo_auto">AUTO</button>
+
+
+
+
+<script>
+
+    $("#btn_call_ajax").click(function () {
+
+        $.ajax({
+            url: "GetTestData",
+            dataType: "json",
+            data: { "testString": $("#demo_input").val() },
+            type: "post"
+        }).done(function (data) {
+            $("#demo_output").text(data);
+
+        });
+
+
+    });
+
+
+    $("#btn_demo_select").click(function () {
+        $("#demo_select").kendoDropDownList({
+            dataSource: {
+                transport: {
+                    read: {
+                        url: "GetDropDownListData",
+                        type: "post",
+                        dataType: "json"
+
+                    }
+                }
+
+            }
+        });
+
+    });
+
+
+    $("#btn_demo_grid").click(function () {
+        $("#demo_grid").kendoGrid({
+            dataSource: {
+                transport: {
+                    read: {
+                        url: "GetGridListData",
+                        type:"post",
+                        dataType:"json",
+
+                    }
+
+
+                }
+
+            },
+            height: 500,
+            columns: [
+                { field: "Id", title: "id", width: "50%" },
+                { field: "Name", title: "名稱", width: "50%" }
+            ]
+        });
+    }
+    );
+    $("#btn_demo_auto").click(function() {
+        $("#demo_auto_input").kendoAutoComplete({
+            dataSource: {
+                transport: {
+                    read: {
+                        url: "GetAutoCompleteData",
+                        dataType: "json",
+                        type:"post"
+
+
+                    }
+
+
+                }
+
+
+
+            }
+            
+
+        });
+    });
+
+</script>
