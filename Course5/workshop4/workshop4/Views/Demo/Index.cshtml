@@ -19,7 +19,7 @@
 <div id="demo_grid"></div>
 <button id="btn_demo_grid">GRID</button>
 
-<input id="demo_auto_input"/>
+<input id="demo_auto_input" />
 <button id="btn_demo_auto">AUTO</button>
 
 
@@ -67,8 +67,8 @@
                 transport: {
                     read: {
                         url: "GetGridListData",
-                        type:"post",
-                        dataType:"json",
+                        type: "post",
+                        dataType: "json",
 
                     }
 
@@ -84,14 +84,14 @@
         });
     }
     );
-    $("#btn_demo_auto").click(function() {
+    $("#btn_demo_auto").click(function () {
         $("#demo_auto_input").kendoAutoComplete({
             dataSource: {
                 transport: {
                     read: {
                         url: "GetAutoCompleteData",
                         dataType: "json",
-                        type:"post"
+                        type: "post"
 
 
                     }
@@ -102,7 +102,7 @@
 
 
             }
-            
+
 
         });
     });

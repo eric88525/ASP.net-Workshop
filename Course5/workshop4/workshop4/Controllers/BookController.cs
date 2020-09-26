@@ -75,10 +75,6 @@ namespace workshop4.Controllers
         [HttpPost()]
         public ActionResult DeleteBook(string bookId)
         {
-
-
-
-
             if (bookService.DeleteBookById(bookId))
             {
                 
@@ -86,7 +82,6 @@ namespace workshop4.Controllers
             }
             else
             {
-                
                 return new EmptyResult();
             }
 
@@ -177,11 +172,6 @@ namespace workshop4.Controllers
                 TempData["message"] = "BookId not exist";
                 return RedirectToAction("SearchBook", "Book");
             }
-
-
-
-
-
 
             try
             {

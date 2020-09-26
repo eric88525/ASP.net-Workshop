@@ -20,11 +20,7 @@ namespace workshop4.Models
         }
 
 
-        /// <summary>
-        /// Add book
-        /// </summary>
-        /// <param name="book"></param>
-        /// <returns></returns>
+
         public int InsertBook(Models.Book book)
         {
 
@@ -347,8 +343,7 @@ namespace workshop4.Models
                             FROM BOOK_LEND_RECORD blr
                             INNER JOIN MEMBER_M mm
 	                            ON blr.KEEPER_ID = mm.USER_ID
-                            WHERE blr.BOOK_ID = @bookId
-                            ORDER BY blr.LEND_DATE DESC;";
+                            WHERE blr.BOOK_ID = @bookId";
             using (SqlConnection conn = new SqlConnection(this.GetDBConnectionString()))
             {
                 conn.Open();
