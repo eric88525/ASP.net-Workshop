@@ -12,7 +12,7 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        
+
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
@@ -23,10 +23,10 @@
             </div>
         </div>
 
-      
 
-        
-        
+
+
+
         <div class="form-group">
             @Html.LabelFor(model => model.BookClassId, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -34,7 +34,7 @@
                 @Html.ValidationMessageFor(model => model.BookClassId, "", new { @class = "text-danger" })
             </div>
         </div>
-        
+
 
         <div class="form-group">
             @Html.LabelFor(model => model.BookStatus, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -43,7 +43,7 @@
                 @Html.ValidationMessageFor(model => model.BookStatus, "", new { @class = "text-danger" })
             </div>
         </div>
-        
+
         <div class="form-group">
             @Html.LabelFor(model => model.BookKeeper, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -54,52 +54,51 @@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Search" class="btn btn-default" />
+                @Html.ActionLink("前往新增書籍", "InsertBook","",new {@class ="btn btn-default"})
             </div>
         </div>
     </div>
 
 }
 
+
 @if (ViewBag.SearchResult != null)
 {
 
     <table class="table table-bordered table-striped">
         <thead>
-        <tr id>
-            <th>圖書類別</th>
-            <th>書名</th>
-            <th>購書日期</th>
-            <th>借閱狀態</th>
-            <th>借閱人</th>
-            <th></th>
-          
-        </tr>
-        </thead>
-        <tbody>
-        @foreach (var item in (List<workshop4.Models.Book>)ViewBag.SearchResult)
-        {
-            <tr id='@item.BookClass'>
-                <td>@item.BookClass</td>
-                <td>@item.BookName </td>
-                <td>@item.BookBoughtDate</td>
-                <td>@item.BookStatus </td>
-
-                <td>@item.UserEName</td>
-                <td>
-
-                    @Html.ActionLink("編輯", "EditBook", new { bookId = item.BookId })
-
-                    <a id="btnDelete" href="#">刪除</a>
-
-                    @Html.ActionLink("借閱紀錄", "CheckBookRecord", new { bookId = item.BookId })
-                   
-
-                    <input id="bookId" type="hidden" value='@item.BookId' />
-
-                </td>
+            <tr id>
+                <th>圖書類別</th>
+                <th >書名</th>
+                <th>購書日期</th>
+                <th>借閱狀態</th>
+                <th>借閱人</th>
+                <th></th>
 
             </tr>
-        }
+        </thead>
+        <tbody>
+            @foreach (var item in (List<workshop4.Models.Book>)ViewBag.SearchResult)
+            {
+                <tr id='@item.BookClass'>
+                    <td>@item.BookClass</td>
+                    <td  style="word-wrap: break-word;max-width: 200px">@item.BookName </td>
+                    <td>@item.BookBoughtDate</td>
+                    <td>@item.BookStatus </td>
+
+                    <td>@item.UserEName</td>
+                    <td>
+
+                        @Html.ActionLink("編輯", "EditBook", new { bookId = item.BookId })
+                        <a id="btnDelete" href="#">刪除</a>
+                        @Html.ActionLink("借閱紀錄", "CheckBookRecord", new { bookId = item.BookId })
+
+                        <input id="bookId" type="hidden" value='@item.BookId' />
+                        <input id="bookName" type="hidden" value='@item.BookName' />
+                    </td>
+
+                </tr>
+            }
         </tbody>
     </table>
 
@@ -107,12 +106,12 @@
 
 
 
-
 <div>
     @Html.ActionLink("前往新增書籍", "InsertBook")
 </div>
 
-@if(TempData["message"]!=null){
+@if (TempData["message"] != null)
+{
     <script type="text/javascript">
         var message = @Html.Raw(Json.Encode(TempData["message"]));
         alert(message);
@@ -122,8 +121,8 @@
     $(document).ready(function () {
 
         $("#btnDelete").click(function (e) {
-
-            if (confirm("是否刪除?") == true) {
+            var bookName = $("#bookName").val();
+            if (confirm("是否刪除" + bookName + "?") == true) {
 
                 e.preventDefault();
                 var tr = $(this).closest('tr');
@@ -133,9 +132,9 @@
                     data: "bookId=" + $("#bookId").val(),
                     dataType: "json",
                     success: function (response) {
-                        alert("刪除成功");
+                        alert("刪除" + bookName + "成功");
                         $(tr).remove();
-                       
+
                     }, error: function (error) {
                         alert("此書無法刪除");
                     }
@@ -145,12 +144,9 @@
 
                 alert("取消刪除");
             }
-
+            location.reload();
         });
-        $("#btnRecord").click(function(e) {
 
-
-        });
 
     });
 </script>
