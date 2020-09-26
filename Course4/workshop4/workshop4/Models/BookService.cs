@@ -86,7 +86,8 @@ namespace workshop4.Models
 						WHERE (bc.BOOK_CLASS_ID = @BookClassId OR @BookClassId='')
 						AND BOOK_NAME LIKE ('%' + @BookName + '%')
 						AND (USER_ENAME = @BookKeeper  OR  @BookKeeper='')
-						AND (CODE_ID = @BookStatus OR  @BookStatus='')";
+						AND (CODE_ID = @BookStatus OR  @BookStatus='')
+                        ORDER BY bd.BOOK_CLASS_ID";
 
             using (SqlConnection conn = new SqlConnection(this.GetDBConnectionString()))
             {
@@ -180,6 +181,7 @@ namespace workshop4.Models
 	                                BEGIN TRANSACTION
 	                                DELETE FROM BOOK_DATA
 	                                WHERE BOOK_ID = @BookId
+                                        AND BOOK_STATUS = 'A' 
 	                                COMMIT TRANSACTION
                                 END TRY
                                 BEGIN CATCH

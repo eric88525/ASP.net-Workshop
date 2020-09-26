@@ -90,11 +90,15 @@
                     <td>
 
                         @Html.ActionLink("編輯", "EditBook", new { bookId = item.BookId })
-                        <a class="btnDelete" href="#">刪除</a>
-                        <input id="bookName" type="hidden" value='@item.BookName' />
+                        <a class="btnDelete" href="#">
+                            
+                            刪除
+                        </a>
+                        <input class="bookName" type="hidden" value='@item.BookName' />
+                        <input class="bookId" type="hidden" value='@item.BookId' />
                         @Html.ActionLink("借閱紀錄", "CheckBookRecord", new { bookId = item.BookId })
 
-                        <input id="bookId" type="hidden" value='@item.BookId' />
+
 
                     </td>
 
@@ -125,7 +129,7 @@
     
     $(".btnDelete").click(function (e) {
         console.log(123);
-        var bookName = $(this).next().val();
+        var bookName = $(this).siblings(".bookName").val();
         console.log(bookName);
         if (confirm("是否刪除" + bookName + "?") == true) {
 
@@ -134,7 +138,7 @@
             $.ajax({
                 type: "POST",
                 url: "/Book/DeleteBook",
-                data: "bookId=" + $("#bookId").val(),
+                data: "bookId=" + $(this).siblings(".bookId").val(),
                 dataType: "json",
                 success: function (response) {
                     alert("刪除" + bookName + "成功");
