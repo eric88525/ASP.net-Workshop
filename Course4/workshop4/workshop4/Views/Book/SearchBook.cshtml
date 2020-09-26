@@ -54,7 +54,7 @@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Search" class="btn btn-default" />
-                @Html.ActionLink("前往新增書籍", "InsertBook","",new {@class ="btn btn-default"})
+                @Html.ActionLink("前往新增書籍", "InsertBook", "", new { @class = "btn btn-default" })
             </div>
         </div>
     </div>
@@ -69,7 +69,7 @@
         <thead>
             <tr id>
                 <th>圖書類別</th>
-                <th >書名</th>
+                <th>書名</th>
                 <th>購書日期</th>
                 <th>借閱狀態</th>
                 <th>借閱人</th>
@@ -82,7 +82,7 @@
             {
                 <tr id='@item.BookClass'>
                     <td>@item.BookClass</td>
-                    <td  style="word-wrap: break-word;max-width: 200px">@item.BookName </td>
+                    <td style="word-wrap: break-word;max-width: 200px">@item.BookName </td>
                     <td>@item.BookBoughtDate</td>
                     <td>@item.BookStatus </td>
 
@@ -90,11 +90,12 @@
                     <td>
 
                         @Html.ActionLink("編輯", "EditBook", new { bookId = item.BookId })
-                        <a id="btnDelete" href="#">刪除</a>
+                        <a class="btnDelete" href="#">刪除</a>
+                        <input id="bookName" type="hidden" value='@item.BookName' />
                         @Html.ActionLink("借閱紀錄", "CheckBookRecord", new { bookId = item.BookId })
 
                         <input id="bookId" type="hidden" value='@item.BookId' />
-                        <input id="bookName" type="hidden" value='@item.BookName' />
+
                     </td>
 
                 </tr>
@@ -119,34 +120,32 @@
 }
 <script type="text/javascript">
     $(document).ready(function () {
+    });
 
-        $("#btnDelete").click(function (e) {
-            var bookName = $("#bookName").val();
-            if (confirm("是否刪除" + bookName + "?") == true) {
+    
+    $(".btnDelete").click(function (e) {
+        console.log(123);
+        var bookName = $(this).next().val();
+        console.log(bookName);
+        if (confirm("是否刪除" + bookName + "?") == true) {
 
-                e.preventDefault();
-                var tr = $(this).closest('tr');
-                $.ajax({
-                    type: "POST",
-                    url: "/Book/DeleteBook",
-                    data: "bookId=" + $("#bookId").val(),
-                    dataType: "json",
-                    success: function (response) {
-                        alert("刪除" + bookName + "成功");
-                        $(tr).remove();
+            e.preventDefault();
+            var tr = $(this).closest('tr');
+            $.ajax({
+                type: "POST",
+                url: "/Book/DeleteBook",
+                data: "bookId=" + $("#bookId").val(),
+                dataType: "json",
+                success: function (response) {
+                    alert("刪除" + bookName + "成功");
+                    $(tr).remove();
 
-                    }, error: function (error) {
-                        alert("此書無法刪除");
-                    }
-                });
-                location.reload();
-            } else {
+                }, error: function (error) {
+                    alert("此書無法刪除");
+                }
+            });
 
-                alert("取消刪除");
-            }
-            location.reload();
-        });
-
-
+        }
+        location.reload();
     });
 </script>
