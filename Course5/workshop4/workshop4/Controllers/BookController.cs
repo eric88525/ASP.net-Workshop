@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Principal;
 using System.Web;
+using System.Web.Helpers;
 using System.Web.Mvc;
 using workshop4.Models;
 
@@ -14,6 +15,20 @@ namespace workshop4.Controllers
 
         Models.CodeService codeService = new Models.CodeService();
         Models.BookService bookService = new Models.BookService();
+
+
+
+        /// <summary>
+        /// TEST
+        /// </summary>
+        /// <returns></returns>
+        public ActionResult Test()
+        {
+            Models.BookArgs arg = new BookArgs();
+            return View(arg);
+            //  return View();
+        }
+
 
 
         // GET: Book
@@ -58,19 +73,51 @@ namespace workshop4.Controllers
         }
 
 
-        [ValidateInput(false)]
+        /// <summary>
+        /// Get select list by type
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        [HttpPost()]
+        public JsonResult GetSelectList(string type)
+        {
+            JsonResult j = Json(codeService.GetCodeTable(type));
+            return j;
+        }
+
+
+
+
+        /*  [ValidateInput(false)]
+          [HttpPost()]
+          public ActionResult SearchBook(Models.BookArgs bookArg)
+          {
+
+
+              ViewBag.SearchResult = bookService.GetBookByCondtioin(bookArg);
+
+              return View("SearchBook");
+          }*/
+
         [HttpPost()]
         public ActionResult SearchBook(Models.BookArgs bookArg)
         {
 
-            ViewBag.BookClassData = codeService.GetCodeTable("BookClass");
-            ViewBag.BookKeeperData = codeService.GetCodeTable("UserName");
-            ViewBag.BookStatusData = codeService.GetCodeTable("BookStatus");
+
             ViewBag.SearchResult = bookService.GetBookByCondtioin(bookArg);
 
             return View("SearchBook");
         }
 
+        [HttpPost()]
+        public JsonResult GetSearchResult(Models.BookArgs bookArg)
+        {
+
+
+            List<Book> searchResult = bookService.GetBookByCondtioin(bookArg);
+
+            return Json(searchResult);
+        }
 
         [HttpPost()]
         public ActionResult DeleteBook(string bookId)

@@ -4,10 +4,6 @@
 }
 
 <h2>Index</h2>
-
-
-
-
 <p id="demo_output"></p>
 <input id="demo_input" type="text" name="name" value="" />
 <button id="btn_call_ajax">send</button>
@@ -38,8 +34,6 @@
             $("#demo_output").text(data);
 
         });
-
-
     });
 
 
@@ -51,16 +45,12 @@
                         url: "GetDropDownListData",
                         type: "post",
                         dataType: "json"
-
                     }
                 }
-
             }
         });
 
     });
-
-
     $("#btn_demo_grid").click(function () {
         $("#demo_grid").kendoGrid({
             dataSource: {
@@ -69,12 +59,8 @@
                         url: "GetGridListData",
                         type: "post",
                         dataType: "json",
-
                     }
-
-
                 }
-
             },
             height: 500,
             columns: [
@@ -82,8 +68,7 @@
                 { field: "Name", title: "名稱", width: "50%" }
             ]
         });
-    }
-    );
+    });
     $("#btn_demo_auto").click(function () {
         $("#demo_auto_input").kendoAutoComplete({
             dataSource: {
@@ -92,18 +77,9 @@
                         url: "GetAutoCompleteData",
                         dataType: "json",
                         type: "post"
-
-
                     }
-
-
                 }
-
-
-
             }
-
-
         });
     });
 

@@ -205,6 +205,7 @@
     <Content Include="Views\Book\EditBook.cshtml" />
     <Content Include="Views\Book\CheckBookRecord.cshtml" />
     <Content Include="Views\Demo\Index.cshtml" />
+    <Content Include="Views\Book\Test.cshtml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

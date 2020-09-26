@@ -7,59 +7,56 @@
 <h2>搜尋書籍</h2>
 
 
-@using (Html.BeginForm("SearchBook", "Book", FormMethod.Post))
-{
-    @Html.AntiForgeryToken()
-
+<form method="post" action="/Book/SearchBook">
     <div class="form-horizontal">
 
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.BookName, htmlAttributes: new { @class = "control-label col-md-2" })
+
             <div class="col-md-10">
-                @Html.EditorFor(model => model.BookName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.BookName, "", new { @class = "text-danger" })
-            </div>
-        </div>
+                <label> 書名</label><br>
 
-
-
-
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.BookClassId, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.BookClassId, (List<SelectListItem>)ViewBag.BookClassData, "請選擇", new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.BookClassId, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.BookStatus, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.BookStatus, (List<SelectListItem>)ViewBag.BookStatusData, "請選擇", new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.BookStatus, "", new { @class = "text-danger" })
+                <input id="bookName" name="BookName" />
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.BookKeeper, htmlAttributes: new { @class = "control-label col-md-2" })
+
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.BookKeeper, (List<SelectListItem>)ViewBag.BookKeeperData, "請選擇", new { @class = "form-control" })
-                @Html.ValidationMessageFor(model => model.BookKeeper, "", new { @class = "text-danger" })
+                <label> 類別</label><br>
+                <select id="select_bookClassId" name="BookClassId"></select>
+            </div>
+        </div>
+
+        <div class="form-group">
+
+            <div class="col-md-10">
+                <label> 狀態</label><br>
+                <select id="select_bookStatus" name="BookStatus"></select>
+            </div>
+        </div>
+
+        <div class="form-group">
+
+            <div class="col-md-10">
+                <label>借閱者 </label>  <br>
+                <select id="select_bookKeeper" name="BookKeeper"></select>
+
             </div>
         </div>
         <div class="form-group">
+
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Search" class="btn btn-default" />
-                @Html.ActionLink("前往新增書籍", "InsertBook", "", new { @class = "btn btn-default" })
+                <input id="btn_search" value="Search" class="btn btn-default" />
+
+                <a href="/Book/InsertBook" class="btn btn-default">前往新增書籍</a>
             </div>
         </div>
     </div>
 
-}
+</form>
+
+<div id="result_grid"></div>
+
 
 
 @if (ViewBag.SearchResult != null)
@@ -91,7 +88,7 @@
 
                         @Html.ActionLink("編輯", "EditBook", new { bookId = item.BookId })
                         <a class="btnDelete" href="#">
-                            
+
                             刪除
                         </a>
                         <input class="bookName" type="hidden" value='@item.BookName' />
@@ -111,6 +108,8 @@
 
 
 
+
+
 <div>
     @Html.ActionLink("前往新增書籍", "InsertBook")
 </div>
@@ -124,9 +123,83 @@
 }
 <script type="text/javascript">
     $(document).ready(function () {
+
+        $("#btn_search").click(function () {
+
+            $.ajax({
+                url: "GetSearchResult",
+                dataType: "json",
+                data: {
+
+                    "BookName": $(".bookName").val(),
+                    "BookClassId": $(".select_bookClassId").val(),
+                    "BookStatus": $(".select_bookStatus").val(),
+                    "BookName": $(".select_bookKeeper").val()
+                },
+                type: "post"
+            }).done(function (data) {
+                $("#demo_output").text(data);
+
+            });
+
+
+
+
+        });
+
+        $("#select_bookClassId").kendoDropDownList({
+            dataTextField: "Text",
+            dataValueField: "Value",
+            dataSource: {
+                transport: {
+                    read: {
+                        url: "GetSelectList",
+                        data: { "type": "BookClass" },
+                        type: "post",
+                        dataType: "json"
+                    }
+                }
+            }
+        });
+        $("#select_bookStatus").kendoDropDownList({
+            dataTextField: "Text",
+            dataValueField: "Value",
+            dataSource: {
+                transport: {
+                    read: {
+                        url: "GetSelectList",
+                        data: { "type": "BookStatus" },
+                        type: "post",
+                        dataType: "json"
+                    }
+                }
+            }
+        });
+
+        $("#select_bookKeeper").kendoDropDownList({
+            dataTextField: "Text",
+            dataValueField: "Value",
+            dataSource: {
+                transport: {
+                    read: {
+                        url: "GetSelectList",
+                        data: { "type": "KeeperFullName" },
+                        type: "post",
+                        dataType: "json"
+                    }
+                }
+            }
+        });
+
+
+
+
     });
 
-    
+
+
+
+
     $(".btnDelete").click(function (e) {
         console.log(123);
         var bookName = $(this).siblings(".bookName").val();

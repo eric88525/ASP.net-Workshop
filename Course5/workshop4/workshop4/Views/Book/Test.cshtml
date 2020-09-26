@@ -1,0 +1,38 @@
+﻿
+@{
+    ViewBag.Title = "Test";
+}
+
+<h2>Test</h2>
+
+@model workshop4.Models.BookArgs
+
+
+<form style="margin-left: 10px" method="post" action="/Book/SearchBook">
+    <h1>Enter user data</h1>
+    <div>
+        <span style="color:red"> ViewBag.Title</span>
+
+    </div>
+    <div class="form-group">
+        <label>account</label>
+        <input type="text" class="form-control" name="BookName" placeholder="enter account" />
+    </div>
+    <div class="form-group">
+        <label>password</label>
+        <input type="password"class="form-control" name="BookClassId" placeholder="enter account" />
+    </div>
+    <div class="form-group">
+        <label>check password</label>
+        <input type="password" class="form-control" name="BookKeeper" placeholder="enter account" />
+    </div>
+    <div class="form-group">
+        <label>check password</label>
+        <input type="password" " class="form-control" name="BookStatus" placeholder="enter account" />
+
+    </div>
+   
+    <button type="submit" class="btn btn-primary">ok</button>
+
+</form>
+
