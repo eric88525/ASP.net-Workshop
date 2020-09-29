@@ -33,12 +33,13 @@ namespace workshop4.Models
             string sql = "";
             switch (selectType)
             {
+                // remove distinct 
                 case "BookClass":
                     sql = @"SELECT DISTINCT bc.BOOK_CLASS_NAME AS BookClass,bc.BOOK_CLASS_ID AS BookClassId  FROM BOOK_CLASS bc";
                     break;
 
                 case "UserName":
-                    sql = @"SELECT DISTINCT USER_ENAME AS UserName  FROM MEMBER_M mm";
+                    sql = @"SELECT DISTINCT USER_ENAME AS UserName ,USER_ID as UserId FROM MEMBER_M mm";
                     break;
 
                 case "BookStatus":
@@ -71,6 +72,9 @@ namespace workshop4.Models
         /// </summary>
         /// <param name="dt"></param>
         /// <returns></returns>
+        
+
+        // 再加一個參數 value 避免耦合度太高!或儀上去
         private List<SelectListItem> MapCodeData(DataTable dt, string selectType)
         {
 
@@ -80,6 +84,7 @@ namespace workshop4.Models
 
             switch (selectType)
             {
+                // Key value 對應可相同
                 case "KeeperFullName":
                     value = "KeeperId";
                     break; 
@@ -90,13 +95,14 @@ namespace workshop4.Models
                 case "BookClass":
                     value = "BookClassId";
                     break;
+                case  "UserName":
+                    value = "UserId";
+                    break;
                 default:
                     value = selectType;
                     break;
 
             }
-
-
 
             List<SelectListItem> result = new List<SelectListItem>();
             foreach (DataRow row in dt.Rows)

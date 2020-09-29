@@ -84,7 +84,13 @@
             {
                 <tr id='@item.BookClass'>
                     <td>@item.BookClass</td>
-                    <td style="word-wrap: break-word;max-width: 200px">@item.BookName </td>
+                    <td style="word-wrap: break-word; max-width: 200px" class="BookDetailLink" value='@item.BookId'>
+                        
+                        @Html.ActionLink(@item.BookName, "EditBook", new { bookId = item.BookId , edit = false})
+                        
+                        
+                    </td>
+
                     <td>@item.BookBoughtDate</td>
                     <td>@item.BookStatus </td>
 
@@ -127,6 +133,9 @@
 }
 <script type="text/javascript">
     $(document).ready(function () {
+       
+
+
     });
 
 

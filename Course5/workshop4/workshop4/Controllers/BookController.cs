@@ -58,7 +58,6 @@ namespace workshop4.Controllers
                 bookService.InsertBook(book);
                 TempData["message"] = "新增" + book.BookName +  "成功";
             }
-            ViewBag.BookClassIdData = codeService.GetCodeTable("BookClass");
             return View(book);
         }
 

@@ -173,6 +173,10 @@ namespace workshop4.Models
         public Boolean DeleteBookById(string bookId)
         {
             int success=0;
+
+
+
+            // 此地方以後需判斷 到底是狀態/能不能刪除????
             string sql = @" BEGIN TRY
 	                                BEGIN TRANSACTION
 	                                DELETE FROM BOOK_DATA
@@ -207,7 +211,7 @@ namespace workshop4.Models
         /// <summary>
         /// Map資料進List
         /// </summary>
-        /// <param name="employeeData"></param>
+        /// <param bookData="書本資料"></param>
         /// <returns></returns>
 
         private List<Models.Book> MapBookDataToList(DataTable bookData)

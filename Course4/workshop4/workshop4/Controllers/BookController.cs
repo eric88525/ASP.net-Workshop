@@ -40,6 +40,7 @@ namespace workshop4.Controllers
             // 時間欄位要填
             if (ModelState.IsValid)
             {
+                // 接bookid > 判斷 > 0929
                 bookService.InsertBook(book);
                 TempData["message"] = "存檔成功";
             }
@@ -77,8 +78,6 @@ namespace workshop4.Controllers
         {
 
 
-
-
             if (bookService.DeleteBookById(bookId))
             {
                 
@@ -94,7 +93,7 @@ namespace workshop4.Controllers
         }
 
         [HttpGet()]
-        public ActionResult EditBook(string bookId)
+        public ActionResult EditBook(string bookId , Boolean edit = true)
         {
 
             int number;
@@ -130,7 +129,10 @@ namespace workshop4.Controllers
             ViewBag.BookClassIdData = codeService.GetCodeTable("BookClass");
             ViewBag.KeeperFullNameData = codeService.GetCodeTable("KeeperFullName");
 
-
+            if (edit)
+            {
+                TempData["edit"] = "Edit";
+            }
 
             return View(book);
         }
@@ -155,16 +157,20 @@ namespace workshop4.Controllers
                 TempData["message"] = "Update false";
             }
 
-
-            return View(book);
+            ViewBag.BookClassData = codeService.GetCodeTable("BookClass");
+            ViewBag.BookKeeperData = codeService.GetCodeTable("UserName");
+            ViewBag.BookStatusData = codeService.GetCodeTable("BookStatus");
+            return View("SearchBook");
         }
 
 
         [HttpGet()]
-        public ActionResult CheckBookRecord(string bookId)
+        public ActionResult CheckBookRecord(string bookId)  // get  watch
         {
             int number;
             // 判斷數字轉型ok?
+
+            // function
             if (string.IsNullOrEmpty(bookId) || !Int32.TryParse(bookId, out number))
             {
                 TempData["message"] = "BookId not correct";

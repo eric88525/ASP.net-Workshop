@@ -6,79 +6,73 @@
 
 <h2>新增書籍</h2>
 
-
-@using (Html.BeginForm("InsertBook", "Book", FormMethod.Post))
-{
-    @Html.AntiForgeryToken()
-
+<form method="post" action="/Book/InsertBook">
     <div class="form-horizontal">
         <h4></h4>
         <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.BookName, htmlAttributes: new { @class = "control-label col-md-2" })
+           
             <div class="col-md-10">
-                @Html.EditorFor(model => model.BookName, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.BookName, "", new { @class = "text-danger" })
+                <label>書名</label><br>
+                @Html.EditorFor(model => model.BookName, new {htmlAttributes = new {@class = "form-control"}})
+                @Html.ValidationMessageFor(model => model.BookName, "", new {@class = "text-danger"})
             </div>
         </div>
 
 
         <div class="form-group">
-            @Html.LabelFor(model => model.BookAuthor, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.BookAuthor, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.BookAuthor, "", new { @class = "text-danger" })
+                <label>作者</label><br>
+                <input id="BookAuthor" name="BookAuthor" class = "form-control" />
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.BookPublisher, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.BookPublisher, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.BookPublisher, "", new { @class = "text-danger" })
+                <label>出版商</label><br>
+                <input id="BookPublisher" name="BookPublisher" class = "form-control"/>
+
+             
             </div>
         </div>
 
 
         <div class="form-group">
-            @Html.LabelFor(model => model.BookNote, htmlAttributes: new { @class = "control-label col-md-2" })
+           
             <div class="col-md-10">
-                @Html.EditorFor(model => model.BookNote, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.BookNote, "", new { @class = "text-danger" })
+                <label>內容簡介</label><br>
+                <input id="BookNote" name="BookNote" class = "form-control"/>
+             
             </div>
         </div>
 
 
 
         <div class="form-group">
-            @Html.LabelFor(model => model.BookBoughtDate, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.BookBoughtDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.BookBoughtDate, "", new { @class = "text-danger" })
+                <label> 購書日期</label><br>
+                <input id="bought_datepicker"  name="BookBoughtDate"  title="datepicker"  class = "form-control"/>
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.BookClassId, htmlAttributes: new { @class = "control-label col-md-2" })
+           
             <div class="col-md-10">
-
-                @Html.DropDownListFor(model => model.BookClassId, (List<SelectListItem>)ViewBag.BookClassIdData, "請選擇", new { @class = "form-control" })
-
-                @Html.ValidationMessageFor(model => model.BookClassId, "", new { @class = "text-danger" })
+                <label> 圖書類別</label><br>
+                <select id="BookClass" name="BookClassId" class = "form-control"></select>
             </div>
         </div>
 
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+                <input type="submit" value="Create" class="btn btn-default" class = "form-control"/>
             </div>
         </div>
 
 
     </div>
-}
+</form>
 
 <div>
     @Html.ActionLink("前往查詢書籍", "SearchBook")
@@ -91,7 +85,23 @@
         alert(message);
     </script>
 }
+<script>
+    $("document").ready(function() {
 
+        
+        // pick the book date
+        $("#bought_datepicker").kendoDatePicker({
+            //get today
+            value: new Date(),
+            format: "yyyy/MM/dd",
+            dateInput: true
+        });
+
+
+    })
+
+
+</script>
 <!--
 <script src="~/Scripts/jquery-1.10.2.min.js"></script>
 <script src="~/Scripts/jquery.validate.min.js"></script>

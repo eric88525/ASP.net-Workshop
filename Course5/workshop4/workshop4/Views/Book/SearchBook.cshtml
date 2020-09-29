@@ -23,8 +23,8 @@
 
             <div class="col-md-10">
                 <label> 類別</label><br>
-                <select id ="BookClass"  name="BookClassId"></select>
-            
+                <select id="BookClass" name="BookClassId"></select>
+
             </div>
         </div>
 
@@ -32,8 +32,8 @@
 
             <div class="col-md-10">
                 <label> 狀態</label><br>
-                <select id="BookStatus"  name="BookStatus"></select>
-               
+                <select id="BookStatus" name="BookStatus"></select>
+
             </div>
         </div>
 
@@ -41,13 +41,14 @@
 
             <div class="col-md-10">
                 <label>借閱者 </label>  <br>
-                <select  id ="KeeperFullName"  name="BookKeeper"></select>
-        
+                <select id="KeeperFullName" name="BookKeeper"></select>
+
             </div>
         </div>
         <div class="form-group">
 
-            <div class=" col-md-10"><br>
+            <div class=" col-md-10">
+                <br>
                 <input id="btn_search" value="Search" class="btn btn-default" />
                 <a href="/Book/InsertBook" class="btn btn-default">前往新增書籍</a>
             </div>
@@ -72,62 +73,108 @@
 
 
     $(document).ready(function () {
-      
-        $("#btn_search").click(function () {
-            $("#result_grid").kendoGrid({
-                dataSource: {
-                    transport: {
-                        read: {
-                            url: "GetSearchResult",
-                            type: "post",
-                            data: {
+        function refreshGrid() {
+            var grid = $("#result_grid").data('kendoGrid');
+            grid.dataSource.read();
+            grid.refresh();
+        }
 
-                                "BookName": $("#BookName").val(),
-                                "BookClassId": $("#BookClass").val(),
-                                "BookStatus": $("#BookStatus").val(),
-                                "BookKeeper": $("#KeeperFullName").val()
-                            },
-                            dataType: "json"
-                        }
+        $("#result_grid").kendoGrid({
+            dataSource: {
+                transport: {
+                    read: {
+                        url: "GetSearchResult",
+                        type: "post",
+                        data: {
+
+                            "BookName": $("#BookName").val(),
+                            "BookClassId": $("#BookClass").val(),
+                            "BookStatus": $("#BookStatus").val(),
+                            "BookKeeper": $("#KeeperFullName").val()
+                        },
+                        dataType: "json"
                     }
-                },
-               
-                columns: [
-                    { field: "BookClass", title: "圖書類別" },
-                    { field: "BookName", title: "書名" },
-                    { field: "BookBoughtDate", title: "購書日期" },
-                    { field: "BookStatus", title: "借閱狀態"},
-                    { field: "UserEName", title: "借閱人" }
-                ]
-            });
+                }
+            },
+
+            columns: [
+                { field: "BookClass", title: "圖書類別" },
+                { field: "BookName", title: "書名" },
+                { field: "BookBoughtDate", title: "購書日期" },
+                { field: "BookStatus", title: "借閱狀態" },
+                { field: "UserEName", title: "借閱人" },
+                {
+                    command: [{
+                        text: "借閱紀錄",
+                        click: function (e) {
+                            // prevent page scroll position change
+                            e.preventDefault();
+                            // e.target is the DOM element representing the button
+                            var tr = $(e.target).closest("tr"); // get the current table row (tr)
+                            // get the data bound to the current table row
+                            var data = this.dataItem(tr);
+                            // deleteBook(data.BookId);
+                        }
+                    }, {
+                        text: "刪除",
+                        click: deleteBook
+
+                    }, {
+                        text: "編輯",
+                        click: function (e) {
+                            // prevent page scroll position change
+                            e.preventDefault();
+                            // e.target is the DOM element representing the button
+                            var tr = $(e.target).closest("tr"); // get the current table row (tr)
+                            // get the data bound to the current table row
+                            var data = this.dataItem(tr);
+                            // deleteBook(data.BookId);
+                        }
+                    }],
+                    title: "      ",
+                    width: "25%"
+
+                }
+
+            ]
         });
 
-    });
-
-
-    $(".btnDelete").click(function (e) {
-        console.log(123);
-        var bookName = $(this).siblings(".bookName").val();
-        console.log(bookName);
-        if (confirm("是否刪除" + bookName + "?") == true) {
-
+        $("#btn_search").click(function () {
+           
+        });
+        function deleteBook(e) {
+            console.log(e);
             e.preventDefault();
-            var tr = $(this).closest('tr');
-            $.ajax({
-                type: "POST",
-                url: "/Book/DeleteBook",
-                data: "bookId=" + $(this).siblings(".bookId").val(),
-                dataType: "json",
-                success: function (response) {
-                    alert("刪除" + bookName + "成功");
-                    $(tr).remove();
+            var tr = $(e.target).closest("tr"); // get the current table row (tr)
 
-                }, error: function (error) {
-                    alert("此書無法刪除");
-                }
-            });
+            // get the data bound to the current table row
+            var data = this.dataItem(tr);
+            console.log(data.BookName);
+            tr.remove();
+
+            $("#result_grid").data("kendoGrid").dataSource.sync();
+
+            /*        if (confirm("是否刪除" + data.BookName + "?") == true) {
+  
+                  $.ajax({
+                      type: "POST",
+                      url: "/Book/DeleteBook",
+                      data: "bookId=" + data.BookId,
+                      dataType: "json",
+                      success: function (response) {
+                          $(tr).remove();
+                          alert("刪除" + data.BookName + "成功");
+                          $("#result_grid").data("kendoGrid").dataSource.read();
+  
+                      }, error: function (error) {
+                          alert("此書無法刪除");
+                      }
+                  });
+              }*/
 
         }
-        location.reload();
+
+
     });
+
 </script>
