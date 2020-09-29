@@ -15,7 +15,7 @@
             <div class="col-md-10">
                 <label> 書名</label><br>
 
-                <input id="bookName" name="BookName" />
+                <input id="BookName" name="BookName" />
             </div>
         </div>
 
@@ -23,7 +23,8 @@
 
             <div class="col-md-10">
                 <label> 類別</label><br>
-                <select id="select_bookClassId" name="BookClassId"></select>
+                <select id ="BookClass"  name="BookClassId"></select>
+            
             </div>
         </div>
 
@@ -31,7 +32,8 @@
 
             <div class="col-md-10">
                 <label> 狀態</label><br>
-                <select id="select_bookStatus" name="BookStatus"></select>
+                <select id="BookStatus"  name="BookStatus"></select>
+               
             </div>
         </div>
 
@@ -39,15 +41,14 @@
 
             <div class="col-md-10">
                 <label>借閱者 </label>  <br>
-                <select id="select_bookKeeper" name="BookKeeper"></select>
-
+                <select  id ="KeeperFullName"  name="BookKeeper"></select>
+        
             </div>
         </div>
         <div class="form-group">
 
-            <div class="col-md-offset-2 col-md-10">
+            <div class=" col-md-10"><br>
                 <input id="btn_search" value="Search" class="btn btn-default" />
-
                 <a href="/Book/InsertBook" class="btn btn-default">前往新增書籍</a>
             </div>
         </div>
@@ -59,61 +60,6 @@
 
 
 
-@if (ViewBag.SearchResult != null)
-{
-
-    <table class="table table-bordered table-striped">
-        <thead>
-            <tr id>
-                <th>圖書類別</th>
-                <th>書名</th>
-                <th>購書日期</th>
-                <th>借閱狀態</th>
-                <th>借閱人</th>
-                <th></th>
-
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in (List<workshop4.Models.Book>)ViewBag.SearchResult)
-            {
-                <tr id='@item.BookClass'>
-                    <td>@item.BookClass</td>
-                    <td style="word-wrap: break-word;max-width: 200px">@item.BookName </td>
-                    <td>@item.BookBoughtDate</td>
-                    <td>@item.BookStatus </td>
-
-                    <td>@item.UserEName</td>
-                    <td>
-
-                        @Html.ActionLink("編輯", "EditBook", new { bookId = item.BookId })
-                        <a class="btnDelete" href="#">
-
-                            刪除
-                        </a>
-                        <input class="bookName" type="hidden" value='@item.BookName' />
-                        <input class="bookId" type="hidden" value='@item.BookId' />
-                        @Html.ActionLink("借閱紀錄", "CheckBookRecord", new { bookId = item.BookId })
-
-
-
-                    </td>
-
-                </tr>
-            }
-        </tbody>
-    </table>
-
-}
-
-
-
-
-
-<div>
-    @Html.ActionLink("前往新增書籍", "InsertBook")
-</div>
-
 @if (TempData["message"] != null)
 {
     <script type="text/javascript">
@@ -122,82 +68,41 @@
     </script>
 }
 <script type="text/javascript">
+
+
+
     $(document).ready(function () {
-
+      
         $("#btn_search").click(function () {
+            $("#result_grid").kendoGrid({
+                dataSource: {
+                    transport: {
+                        read: {
+                            url: "GetSearchResult",
+                            type: "post",
+                            data: {
 
-            $.ajax({
-                url: "GetSearchResult",
-                dataType: "json",
-                data: {
-
-                    "BookName": $(".bookName").val(),
-                    "BookClassId": $(".select_bookClassId").val(),
-                    "BookStatus": $(".select_bookStatus").val(),
-                    "BookName": $(".select_bookKeeper").val()
+                                "BookName": $("#BookName").val(),
+                                "BookClassId": $("#BookClass").val(),
+                                "BookStatus": $("#BookStatus").val(),
+                                "BookKeeper": $("#KeeperFullName").val()
+                            },
+                            dataType: "json"
+                        }
+                    }
                 },
-                type: "post"
-            }).done(function (data) {
-                $("#demo_output").text(data);
-
+               
+                columns: [
+                    { field: "BookClass", title: "圖書類別" },
+                    { field: "BookName", title: "書名" },
+                    { field: "BookBoughtDate", title: "購書日期" },
+                    { field: "BookStatus", title: "借閱狀態"},
+                    { field: "UserEName", title: "借閱人" }
+                ]
             });
-
-
-
-
         });
-
-        $("#select_bookClassId").kendoDropDownList({
-            dataTextField: "Text",
-            dataValueField: "Value",
-            dataSource: {
-                transport: {
-                    read: {
-                        url: "GetSelectList",
-                        data: { "type": "BookClass" },
-                        type: "post",
-                        dataType: "json"
-                    }
-                }
-            }
-        });
-        $("#select_bookStatus").kendoDropDownList({
-            dataTextField: "Text",
-            dataValueField: "Value",
-            dataSource: {
-                transport: {
-                    read: {
-                        url: "GetSelectList",
-                        data: { "type": "BookStatus" },
-                        type: "post",
-                        dataType: "json"
-                    }
-                }
-            }
-        });
-
-        $("#select_bookKeeper").kendoDropDownList({
-            dataTextField: "Text",
-            dataValueField: "Value",
-            dataSource: {
-                transport: {
-                    read: {
-                        url: "GetSelectList",
-                        data: { "type": "KeeperFullName" },
-                        type: "post",
-                        dataType: "json"
-                    }
-                }
-            }
-        });
-
-
-
 
     });
-
-
-
 
 
     $(".btnDelete").click(function (e) {

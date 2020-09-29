@@ -87,28 +87,6 @@ namespace workshop4.Controllers
 
 
 
-
-        /*  [ValidateInput(false)]
-          [HttpPost()]
-          public ActionResult SearchBook(Models.BookArgs bookArg)
-          {
-
-
-              ViewBag.SearchResult = bookService.GetBookByCondtioin(bookArg);
-
-              return View("SearchBook");
-          }*/
-
-        [HttpPost()]
-        public ActionResult SearchBook(Models.BookArgs bookArg)
-        {
-
-
-            ViewBag.SearchResult = bookService.GetBookByCondtioin(bookArg);
-
-            return View("SearchBook");
-        }
-
         [HttpPost()]
         public JsonResult GetSearchResult(Models.BookArgs bookArg)
         {
@@ -116,7 +94,8 @@ namespace workshop4.Controllers
 
             List<Book> searchResult = bookService.GetBookByCondtioin(bookArg);
 
-            return Json(searchResult);
+            JsonResult j = Json(searchResult);
+            return j;
         }
 
         [HttpPost()]

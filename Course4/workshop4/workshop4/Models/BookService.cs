@@ -81,7 +81,7 @@ namespace workshop4.Models
 
 						WHERE (bc.BOOK_CLASS_ID = @BookClassId OR @BookClassId='')
 						AND BOOK_NAME LIKE ('%' + @BookName + '%')
-						AND (USER_ENAME = @BookKeeper  OR  @BookKeeper='')
+						AND (mm.USER_ID = @BookKeeper  OR  @BookKeeper='')
 						AND (CODE_ID = @BookStatus OR  @BookStatus='')
                         ORDER BY bd.BOOK_CLASS_ID";
 
