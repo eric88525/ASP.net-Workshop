@@ -83,7 +83,7 @@ namespace BookMamageSystem.Models
 						AND BOOK_NAME LIKE ('%' + @BookName + '%')
 						AND (mm.USER_ID = @BookKeeper  OR  @BookKeeper='')
 						AND (CODE_ID = @BookStatus OR  @BookStatus='')
-						ORDER BY bd.BOOK_CLASS_ID";
+						ORDER BY bd.BOOK_BOUGHT_DATE DESC";
 
 			using (SqlConnection conn = new SqlConnection(this.GetDBConnectionString()))
 			{

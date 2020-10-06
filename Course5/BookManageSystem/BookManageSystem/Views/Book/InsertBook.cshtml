@@ -14,7 +14,7 @@
 
             <div class="col-md-10">
                 <label>書名</label><br>
-                <input id="BookName" name="BookName" required   maxlength="100"  class="form-control" />
+                <input id="BookName" name="BookName" required   maxlength="150"  class="form-control" />
 
             </div>
         </div>
@@ -23,14 +23,14 @@
         <div class="form-group">
             <div class="col-md-10">
                 <label>作者</label><br>
-                <input id="BookAuthor" name="BookAuthor" required  maxlength="100"   class="form-control" />
+                <input id="BookAuthor" name="BookAuthor" required  maxlength="25"   class="form-control" />
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-10">
                 <label>出版商</label><br>
-                <input id="BookPublisher" name="BookPublisher"   maxlength="100"   required class="form-control" />
+                <input id="BookPublisher" name="BookPublisher"   maxlength="15"   required class="form-control" />
 
 
             </div>
@@ -65,8 +65,9 @@
 
 
         <div class="form-group">
-            <a    class="btn btn-default"  href="/Book/SearchBook"     >前往查詢書籍</a>
             <input type="submit" value="新增書籍" class="btn btn-default" class="form-control" required/>
+            <a    class="btn btn-default"  href="/Book/SearchBook"     >前往查詢書籍</a>
+
             <div class="col-md-offset-2 col-md-10">
                
             </div>
@@ -86,7 +87,7 @@
 }
 
 <script type="text/javascript">
-    $("document").ready(function () {
+    $(document).ready(function () {
            
         // pick the book date
         $("#bought_datepicker").kendoDatePicker({

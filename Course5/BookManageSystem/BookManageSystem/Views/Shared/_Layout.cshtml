@@ -11,7 +11,7 @@
     <script src="~/Scripts/bootstrap.min.js"></script>
 
     <link href="~/Scripts/css/kendo.common-material.min.css" rel="stylesheet" type="text/css" />
-    <link href="~/Scripts/css/kendo.material.min.css" rel="stylesheet" type="text/css" /> >
+    <link href="~/Scripts/css/kendo.material.min.css" rel="stylesheet" type="text/css" />
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/Scripts/js/kendo.all.min.js"></script>
@@ -34,20 +34,13 @@
     </div>
 
 
-<script type="text/javascript">
+    <script type="text/javascript">
     var isReadonly =   @Json.Encode(TempData["readonly"]);
     $(document).ready(function () {
-
-
-
         var arr = ["UserName", "BookClass", "BookStatus", "KeeperFullName"];
-
         $.each(arr,
-            function (element) {
-
+            function (index, element) {
                 var value = $("#" + element).attr("value");
-
-
                 $("#" + element).kendoDropDownList({
                     readonly: true,
                     optionLabel: "請選擇",
@@ -66,23 +59,20 @@
                     value: value
                 });
             });
-        
+
             if (isReadonly != null)
-        {
-
-
-        $("#KeeperFullName").data("kendoDropDownList").readonly();
-        $("#BookStatus").data("kendoDropDownList").readonly();
-        $("#BookClass").data("kendoDropDownList").readonly();
-        $(".InputItem").attr("readonly", true);
-
-    }
+            {
+                $("#KeeperFullName").data("kendoDropDownList").readonly();
+                $("#BookStatus").data("kendoDropDownList").readonly();
+                $("#BookClass").data("kendoDropDownList").readonly();
+                $(".InputItem").attr("readonly", true);
+            }
 
 
     });
-</script>
+    </script>
 
-<div class="container body-content">
+    <div class="container body-content">
         @RenderBody()
         <hr />
         <footer>

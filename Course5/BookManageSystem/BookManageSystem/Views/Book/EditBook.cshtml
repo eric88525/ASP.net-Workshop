@@ -30,7 +30,7 @@ else
                 <label class="control-label col-md-2 ">書名</label>
 
                 <div class="col-md-10">
-                    <input id="BookName" name="BookName" value=@Model.BookName class="form-control InputItem" required />
+                    <input id="BookName" name="BookName" value=@Model.BookName class="form-control InputItem" required maxlength="180"/>
                 </div>
             </div>
 
@@ -38,14 +38,14 @@ else
                 <label class="control-label col-md-2 ">作者</label>
 
                 <div class="col-md-10">
-                    <input id="BookAuthor" name="BookAuthor" class="form-control InputItem" value=@Model.BookAuthor required max="150">
+                    <input id="BookAuthor" name="BookAuthor" class="form-control InputItem" value=@Model.BookAuthor required maxlength="25">
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-md-2 ">出版商</label>
 
                 <div class="col-md-10">
-                    <input id="BookPublisher" name="BookPublisher" value=@Model.BookPublisher class="form-control InputItem" required max="150" />
+                    <input id="BookPublisher" name="BookPublisher" value=@Model.BookPublisher class="form-control InputItem" required max="15" />
                 </div>
             </div>
 
@@ -83,18 +83,12 @@ else
                 </div>
             </div>
 
-
-
             <div class="form-group">
                 <label class="control-label col-md-2 ">借閱者</label>
                 <div class="col-md-10">
                     <select id="KeeperFullName" name="BookKeeperId" value=@Model.BookKeeperId></select>
                 </div>
             </div>
-
-
-
-
 
             <div class="form-group">
                 <div class="col-md-offset-2 col-md-10">
@@ -108,10 +102,6 @@ else
                     {
                         <a href="/Book/SearchBook" class="btn btn-default"> 返回搜尋</a>
                     }
-
-
-
-
                 </div>
             </div>
         </div>
@@ -170,25 +160,31 @@ else
 
         if (isReadonly) {
             var datepicker = $("#DatePicker").data("kendoDatePicker");
-      
+
             datepicker.readonly();
         }
-        
 
 
+        function BookStatusCheck() {
+            var value = $("#BookStatus").data("kendoDropDownList").value();
 
-       
+            if (value == 'B' || value == 'C') {
+                //required
+                $("#KeeperFullName").data("kendoDropDownList").readonly(false);
+                
+            } else {
+                // clear and readonly
+                $("#KeeperFullName").data("kendoDropDownList").value("");
+                $("#KeeperFullName").data("kendoDropDownList").readonly();
+                
+            }
+        }
 
+        $("#BookStatus").change(function() {
+            BookStatusCheck();
+        });
 
-
-        /*  function BookStatusCheck() {
-                  var value = $("#BookStatus").val();
-                  if (value == 'B' || value == 'C') {
-    
-                  } else {
-    
-                  }
-              }*/
+        BookStatusCheck();
     });
 
 </script>
