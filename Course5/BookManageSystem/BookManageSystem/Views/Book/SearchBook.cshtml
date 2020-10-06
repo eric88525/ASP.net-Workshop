@@ -91,9 +91,9 @@
         }
 
         var dataSource;
- 
+
         $("#btn_search").click(function () {
-         
+
             dataSource = new kendo.data.DataSource({
                 transport: {
                     read: {
@@ -113,10 +113,10 @@
             });
 
 
-         $("#result_grid").data("kendoGrid").setDataSource(dataSource);
-         
+            $("#result_grid").data("kendoGrid").setDataSource(dataSource);
+
         });
-       
+
         $("#result_grid").kendoGrid({
             dataSource: dataSource,
 
@@ -156,7 +156,7 @@
                             var data = this.dataItem(tr);
                             console.log(data.BookId);
 
-                            location.href = "/Book/EditBook/?bookId=" + data.BookId+"&edit=true";
+                            location.href = "/Book/EditBook/?bookId=" + data.BookId + "&edit=true";
 
                         }
                     }],
@@ -167,7 +167,7 @@
 
             ]
         });
-       
+
 
 
         $("#BookName").kendoAutoComplete({
@@ -193,9 +193,7 @@
             // get the data bound to the current table row
             var data = this.dataItem(tr);
             console.log(data.BookName);
-            
 
-            // $("#result_grid").data("kendoGrid").dataSource.sync();
 
             if (confirm("是否刪除" + data.BookName + "?") == true) {
 
@@ -216,7 +214,7 @@
             }
 
         }
-
+     
 
     });
 

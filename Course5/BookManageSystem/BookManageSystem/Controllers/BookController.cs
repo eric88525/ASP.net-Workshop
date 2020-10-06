@@ -143,7 +143,11 @@ namespace BookMamageSystem.Controllers
 
             if (edit)
             {
-                ViewData["edit"] = true;
+                TempData["edit"] = true;
+            }
+            else
+            {
+                TempData["readonly"] = true;
             }
        
 
@@ -165,7 +169,7 @@ namespace BookMamageSystem.Controllers
                 TempData["message"] = "Update false";
             }
 
-            TempData["view"] = "view";
+            TempData["edit"] = true;
 
             return View(book);
         }

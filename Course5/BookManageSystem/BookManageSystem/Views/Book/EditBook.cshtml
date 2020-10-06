@@ -18,7 +18,7 @@ else
 
 
 
-<form id="editForm"method="post" action="/Book/EditBook">
+<form id="editForm" method="post" action="/Book/EditBook">
     <input hidden="hidden" id="bookId" name="BookId" value=@Model.BookId />
     <div class="form-horizontal">
         <hr />
@@ -30,7 +30,7 @@ else
                 <label class="control-label col-md-2 ">書名</label>
 
                 <div class="col-md-10">
-                    <input id="BookName" name="BookName" value=@Model.BookName class="form-control InputItem" required/>
+                    <input id="BookName" name="BookName" value=@Model.BookName class="form-control InputItem" required />
                 </div>
             </div>
 
@@ -38,14 +38,14 @@ else
                 <label class="control-label col-md-2 ">作者</label>
 
                 <div class="col-md-10">
-                    <input id="BookAuthor" name="BookAuthor" class="form-control InputItem" value=@Model.BookAuthor required>
+                    <input id="BookAuthor" name="BookAuthor" class="form-control InputItem" value=@Model.BookAuthor required max="150">
                 </div>
             </div>
             <div class="form-group">
                 <label class="control-label col-md-2 ">出版商</label>
 
                 <div class="col-md-10">
-                    <input id="BookPublisher" name="BookPublisher" value=@Model.BookPublisher class="form-control InputItem" required/>
+                    <input id="BookPublisher" name="BookPublisher" value=@Model.BookPublisher class="form-control InputItem" required max="150" />
                 </div>
             </div>
 
@@ -53,7 +53,7 @@ else
                 <label class="control-label col-md-2 ">內容簡介</label>
 
                 <div class="col-md-10">
-                    <textarea id="BookNote" name="BookNote" value=@Model.BookNote class="form-control InputItem" required>@Model.BookNote</textarea>
+                    <textarea id="BookNote" name="BookNote" value=@Model.BookNote class="form-control InputItem" required max="1100">@Model.BookNote</textarea>
                 </div>
             </div>
 
@@ -63,7 +63,7 @@ else
                 <label class="control-label col-md-2 ">購書日期</label>
                 <div class="col-md-10">
 
-                    <input id="bought_datepicker" name="BookBoughtDate" title="datepicker" value=@Model.BookBoughtDate class="form-control" required/>
+                    <input id="DatePicker" name="BookBoughtDate" title="datepicker" value=@Model.BookBoughtDate class="form-control" required />
                 </div>
             </div>
 
@@ -129,8 +129,11 @@ else
 
 
 <script>
-
+   // var isReadonly =   @Json.Encode(TempData["readonly"]);
     $(document).ready(function () {
+
+
+        var validator = $("#editForm").kendoValidator();
 
 
         $("#btnDelete").click(function (e) {
@@ -145,7 +148,8 @@ else
                     success: function (response) {
                         alert("成功");
                         window.location.href = "/Book/SearchBook";
-                    }, error: function (error) {
+                    },
+                    error: function (error) {
                         alert("此書無法刪除");
                     }
                 });
@@ -157,38 +161,38 @@ else
 
 
         // pick the book date
-        $("#bought_datepicker").kendoDatePicker({
+        $("#DatePicker").kendoDatePicker({
             //get today
-
             format: "yyyy/MM/dd",
             dateInput: true
         });
 
 
-        function BookStatusCheck() {
-            var value = $("#BookStatus").val();
-            if (value == 'B' || value == 'C') {
-
-            } else {
-
-            }
+        if (isReadonly) {
+            var datepicker = $("#DatePicker").data("kendoDatePicker");
+      
+            datepicker.readonly();
         }
+        
+
+
+
+       
+
+
+
+        /*  function BookStatusCheck() {
+                  var value = $("#BookStatus").val();
+                  if (value == 'B' || value == 'C') {
     
-
-        var validator = $("#editForm").kendoValidator().data("kendoValidator");
-
-
+                  } else {
+    
+                  }
+              }*/
     });
-
 
 </script>
 
 
-@if (ViewData["edit"]==null)
-{
-    <script type="text/javascript">
-        console.log("not edit");
-        $(".InputItem").attr("readonly", true);
 
-    </script>
-}
+

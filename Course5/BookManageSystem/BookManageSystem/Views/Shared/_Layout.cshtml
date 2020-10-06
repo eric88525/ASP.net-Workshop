@@ -33,7 +33,56 @@
         </div>
     </div>
 
-    <div class="container body-content">
+
+<script type="text/javascript">
+    var isReadonly =   @Json.Encode(TempData["readonly"]);
+    $(document).ready(function () {
+
+
+
+        var arr = ["UserName", "BookClass", "BookStatus", "KeeperFullName"];
+
+        $.each(arr,
+            function (element) {
+
+                var value = $("#" + element).attr("value");
+
+
+                $("#" + element).kendoDropDownList({
+                    readonly: true,
+                    optionLabel: "請選擇",
+                    dataTextField: "Text",
+                    dataValueField: "Value",
+                    dataSource: {
+                        transport: {
+                            read: {
+                                url: "/Book/GetSelectList",
+                                data: { "type": element },
+                                type: "post",
+                                dataType: "json"
+                            }
+                        }
+                    },
+                    value: value
+                });
+            });
+        
+            if (isReadonly != null)
+        {
+
+
+        $("#KeeperFullName").data("kendoDropDownList").readonly();
+        $("#BookStatus").data("kendoDropDownList").readonly();
+        $("#BookClass").data("kendoDropDownList").readonly();
+        $(".InputItem").attr("readonly", true);
+
+    }
+
+
+    });
+</script>
+
+<div class="container body-content">
         @RenderBody()
         <hr />
         <footer>
@@ -41,39 +90,7 @@
         </footer>
     </div>
 
-    <script type="text/javascript">
-        $(document).ready(function () {
-            var arr = ["UserName", "BookClass", "BookStatus", "KeeperFullName"];
 
-            $.each(arr,
-                function (index, element) {
-
-                    var value = $("#" + element).attr("value");
-
-
-                    $("#" + element).kendoDropDownList({
-
-                        optionLabel: "請選擇",
-                        dataTextField: "Text",
-                        dataValueField: "Value",
-                        dataSource: {
-                            transport: {
-                                read: {
-                                    url: "/Book/GetSelectList",
-                                    data: { "type": element },
-                                    type: "post",
-                                    dataType: "json"
-                                }
-                            }
-                        },
-                        value: value
-                    });
-                });
-            console.log(123);
-            console.log(@TempData["edit"]);
-        });
-
-    </script>
 
 
 </body>

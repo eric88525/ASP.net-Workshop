@@ -14,7 +14,7 @@
 
             <div class="col-md-10">
                 <label>書名</label><br>
-                <input id="BookName" name="BookName" required  class="form-control" />
+                <input id="BookName" name="BookName" required   maxlength="100"  class="form-control" />
 
             </div>
         </div>
@@ -23,14 +23,14 @@
         <div class="form-group">
             <div class="col-md-10">
                 <label>作者</label><br>
-                <input id="BookAuthor" name="BookAuthor" required class="form-control" />
+                <input id="BookAuthor" name="BookAuthor" required  maxlength="100"   class="form-control" />
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-10">
                 <label>出版商</label><br>
-                <input id="BookPublisher" name="BookPublisher" required class="form-control" />
+                <input id="BookPublisher" name="BookPublisher"   maxlength="100"   required class="form-control" />
 
 
             </div>
@@ -41,7 +41,7 @@
 
             <div class="col-md-10">
                 <label>內容簡介</label><br>
-                <textarea  id="BookNote" name="BookNote" required class="form-control"  ></textarea>
+                <textarea  id="BookNote" name="BookNote" required   maxlength="1100"  class="form-control"  ></textarea>
 
             </div>
         </div>
@@ -84,7 +84,8 @@
         alert(message);
     </script>
 }
-<script>
+
+<script type="text/javascript">
     $("document").ready(function () {
            
         // pick the book date
