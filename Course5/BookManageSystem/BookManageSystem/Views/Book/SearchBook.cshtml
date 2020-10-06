@@ -1,0 +1,224 @@
+﻿@model BookMamageSystem.Models.BookArgs
+
+@{
+    ViewBag.Title = "SearchBook";
+}
+
+<h2>搜尋書籍</h2>
+
+
+<form method="post" action="/Book/SearchBook">
+    <div class="form-horizontal">
+
+        <div class="form-group">
+
+            <div class="col-md-10">
+                <label> 書名</label><br>
+
+                <input id="BookName" name="BookName" />
+            </div>
+        </div>
+
+        <div class="form-group">
+
+            <div class="col-md-10">
+                <label> 類別</label><br>
+                <select id="BookClass" name="BookClassId"></select>
+
+            </div>
+        </div>
+
+        <div class="form-group">
+
+            <div class="col-md-10">
+                <label> 狀態</label><br>
+                <select id="BookStatus" name="BookStatus"></select>
+
+            </div>
+        </div>
+
+        <div class="form-group">
+
+            <div class="col-md-10">
+                <label>借閱者 </label>  <br>
+                <select id="UserName" name="BookKeeper"></select>
+
+            </div>
+        </div>
+        <div class="form-group">
+
+            <div class=" col-md-10">
+                <br>
+                <a id="btn_search" class="btn btn-default">搜尋</a>
+                <a href="/Book/InsertBook" class="btn btn-default">前往新增書籍</a>
+            </div>
+        </div>
+    </div>
+
+</form>
+
+<div id="result_grid"></div>
+
+
+
+@if (TempData["message"] != null)
+{
+    <script type="text/javascript">
+        var message = @Html.Raw(Json.Encode(TempData["message"]));
+        alert(message);
+    </script>
+}
+
+
+<script id="detail-template" type="text/kendo-templ">
+
+    <a href="/Book/EditBook/?bookId=#= data.BookId #&edit=false"> #:data.BookName # </a>
+
+
+</script>
+
+<script type="text/javascript">
+
+
+
+    $(document).ready(function () {
+
+
+        function refreshGrid() {
+            var grid = $("#result_grid").data('kendoGrid');
+            grid.dataSource.read();
+            grid.refresh();
+        }
+
+        var dataSource;
+ 
+        $("#btn_search").click(function () {
+         
+            dataSource = new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: "/Book/GetSearchResult",
+                        type: "post",
+                        data: {
+
+                            "BookName": $("#BookName").val(),
+                            "BookClassId": $("#BookClass").val(),
+                            "BookStatus": $("#BookStatus").val(),
+                            "BookKeeper": $("#KeeperFullName").val()
+                        },
+                        dataType: "json"
+                    }
+                }
+
+            });
+
+
+         $("#result_grid").data("kendoGrid").setDataSource(dataSource);
+         
+        });
+       
+        $("#result_grid").kendoGrid({
+            dataSource: dataSource,
+
+            columns: [
+                { field: "BookClass", title: "圖書類別" },
+                {
+
+
+                    field: "BookName",
+                    title: "書名",
+                    template: $("#detail-template").html()
+
+                },
+                { field: "BookBoughtDate", title: "購書日期" },
+                { field: "BookStatus", title: "借閱狀態" },
+                { field: "UserEName", title: "借閱人" },
+                {
+                    command: [{
+                        text: "借閱紀錄",
+                        click: function (e) {
+                            var tr = $(e.target).closest("tr");
+                            var data = this.dataItem(tr);
+                            console.log(data);
+
+                            location.href = "/Book/GetBookRecord/?bookId=" + data.BookId;
+
+
+                        }
+                    }, {
+                        text: "刪除",
+                        click: deleteBook
+
+                    }, {
+                        text: "編輯",
+                        click: function (e) {
+                            var tr = $(e.target).closest("tr");
+                            var data = this.dataItem(tr);
+                            console.log(data.BookId);
+
+                            location.href = "/Book/EditBook/?bookId=" + data.BookId+"&edit=true";
+
+                        }
+                    }],
+                    title: "      ",
+                    width: "25%"
+
+                }
+
+            ]
+        });
+       
+
+
+        $("#BookName").kendoAutoComplete({
+            dataSource: {
+                transport: {
+                    read: {
+                        url: "/Book/GetBookNameList",
+                        type: "post",
+                        dataType: "json"
+                    }
+                }
+            }
+        });
+
+
+
+
+        function deleteBook(e) {
+            console.log(e);
+            e.preventDefault();
+            var tr = $(e.target).closest("tr"); // get the current table row (tr)
+
+            // get the data bound to the current table row
+            var data = this.dataItem(tr);
+            console.log(data.BookName);
+            
+
+            // $("#result_grid").data("kendoGrid").dataSource.sync();
+
+            if (confirm("是否刪除" + data.BookName + "?") == true) {
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Book/DeleteBook",
+                    data: "bookId=" + data.BookId,
+                    dataType: "json",
+                    success: function (response) {
+                        $(tr).remove();
+                        alert("刪除" + data.BookName + "成功");
+                        $("#result_grid").data("kendoGrid").dataSource.read();
+
+                    }, error: function (error) {
+                        alert("此書無法刪除");
+                    }
+                });
+            }
+
+        }
+
+
+    });
+
+
+</script>

@@ -1,0 +1,46 @@
+﻿@using System.Web.UI.WebControls
+
+@{
+    ViewBag.Title = "CheckBookRecord";
+}
+
+<h2>借閱紀錄</h2>
+
+<h3>編號: @ViewBag.bookId</h3>
+<div>
+    @Html.ActionLink("返回搜尋", "SearchBook")
+</div>
+
+<div id="record_grid"></div>
+
+<script type="text/javascript">
+
+    $(document).ready(function () {
+
+        $("#record_grid").kendoGrid({
+            dataSource: {
+                transport: {
+                    read: {
+                        url: "/Book/GetBookRecordById",
+                        type: "post",
+                        data: {
+                                "bookId":@ViewBag.bookId
+                        },
+                        dataType: "json"
+                    }
+                }
+            },
+
+            columns: [
+                { field: "LendDate", title: "借閱日期" },
+                { field: "BookKeeperId", title: "借閱人員編號" },
+                { field: "UserEName", title: "英文姓名" },
+                { field: "UserCName", title: "中文姓名" }
+              
+
+            ]
+        });
+    });
+
+
+</script>
