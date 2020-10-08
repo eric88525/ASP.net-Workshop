@@ -32,6 +32,17 @@ namespace BookMamageSystem.Controllers
         public ActionResult InsertBook()
         {
 
+            try
+            {
+                int i = 0;
+                int j = 1888 / i;
+            }
+            catch (Exception e)
+            {
+                BookManageSystem.Common.Logger.Write(BookManageSystem.Common.Logger.LogCategoryEnum.Error,e.Message);
+            }
+
+
             ViewBag.BookClassIdData = codeService.GetCodeTable("BookClass");
             return View();
         }

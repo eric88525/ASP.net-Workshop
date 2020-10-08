@@ -98,6 +98,7 @@
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="Log4Net\log4netconfig.xml" />
     <Content Include="Scripts\css\fonts\DejaVu\DejaVuSans-Bold.ttf" />
     <Content Include="Scripts\css\fonts\DejaVu\DejaVuSans-BoldOblique.ttf" />
     <Content Include="Scripts\css\fonts\DejaVu\DejaVuSans-ExtraLight.ttf" />
