@@ -139,8 +139,6 @@
                         click: function (e) {
                             var tr = $(e.target).closest("tr");
                             var data = this.dataItem(tr);
-                            console.log(data);
-
                             location.href = "/Book/GetBookRecord/?bookId=" + data.BookId;
 
 
@@ -154,8 +152,6 @@
                         click: function (e) {
                             var tr = $(e.target).closest("tr");
                             var data = this.dataItem(tr);
-                            console.log(data.BookId);
-
                             location.href = "/Book/EditBook/?bookId=" + data.BookId + "&edit=true";
 
                         }
@@ -171,7 +167,11 @@
 
 
         $("#BookName").kendoAutoComplete({
+            minLength: 3,
+            placeholder: "Type something...",
             dataSource: {
+                // 字要多一點
+               
                 transport: {
                     read: {
                         url: "/Book/GetBookNameList",
@@ -186,15 +186,11 @@
 
 
         function deleteBook(e) {
-            console.log(e);
             e.preventDefault();
             var tr = $(e.target).closest("tr"); // get the current table row (tr)
 
             // get the data bound to the current table row
             var data = this.dataItem(tr);
-            console.log(data.BookName);
-
-
             if (confirm("是否刪除" + data.BookName + "?") == true) {
 
                 $.ajax({
@@ -203,12 +199,18 @@
                     data: "bookId=" + data.BookId,
                     dataType: "json",
                     success: function (response) {
-                        $(tr).remove();
-                        alert("刪除" + data.BookName + "成功");
-                        $("#result_grid").data("kendoGrid").dataSource.read();
+                        debugger 
 
+                        if (response == "Success") {
+                            alert("刪除" + data.BookName + "成功");
+                            $("#result_grid").data("kendoGrid").dataSource.read();
+                        } else if (response=="Borrowed") {
+                            alert("此書已借用");
+                        } else {
+                            alert("此書無法刪除");
+                        }
                     }, error: function (error) {
-                        alert("此書無法刪除");
+                        
                     }
                 });
             }

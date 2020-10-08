@@ -15,6 +15,8 @@
     <script src="~/Scripts/jquery.validate.min.js"></script>
     <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
     <script src="~/Scripts/js/kendo.all.min.js"></script>
+    <script src="~/Scripts/js/kendo.all.min.js"></script>
+
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -68,6 +70,11 @@
                 $(".InputItem").attr("readonly", true);
             }
 
+        $(".DatePicker").kendoDatePicker({
+            //get today
+            format: "yyyy/MM/dd",
+            dateInput: true
+        });
 
     });
     </script>

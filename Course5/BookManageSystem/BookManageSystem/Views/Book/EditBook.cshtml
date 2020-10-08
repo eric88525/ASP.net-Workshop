@@ -63,7 +63,7 @@ else
                 <label class="control-label col-md-2 ">購書日期</label>
                 <div class="col-md-10">
 
-                    <input id="DatePicker" name="BookBoughtDate" title="datepicker" value=@Model.BookBoughtDate class="form-control" required />
+                    <input class="DatePicker" name="BookBoughtDate" title="datepicker" value=@Model.BookBoughtDate class="form-control" required />
                 </div>
             </div>
 
@@ -123,8 +123,6 @@ else
     $(document).ready(function () {
 
 
-        var validator = $("#editForm").kendoValidator();
-
 
         $("#btnDelete").click(function (e) {
             if (confirm("是否刪除?") == true) {
@@ -150,13 +148,6 @@ else
         });
 
 
-        // pick the book date
-        $("#DatePicker").kendoDatePicker({
-            //get today
-            format: "yyyy/MM/dd",
-            dateInput: true
-        });
-
 
         if (isReadonly) {
             var datepicker = $("#DatePicker").data("kendoDatePicker");
@@ -164,7 +155,7 @@ else
             datepicker.readonly();
         }
 
-
+        // check book status
         function BookStatusCheck() {
             var value = $("#BookStatus").data("kendoDropDownList").value();
 

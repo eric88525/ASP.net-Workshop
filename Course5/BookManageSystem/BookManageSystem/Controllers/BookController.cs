@@ -67,6 +67,8 @@ namespace BookMamageSystem.Controllers
         [HttpPost()]
         public JsonResult GetSelectList(string type)
         {
+
+            // return result or no var
             JsonResult j = Json(codeService.GetCodeTable(type));
             return j;
         }
@@ -87,17 +89,11 @@ namespace BookMamageSystem.Controllers
         [HttpPost()]
         public ActionResult DeleteBook(string bookId)
         {
-            if (bookService.DeleteBookById(bookId))
-            {
 
-                return this.Json(true);
-            }
-            else
-            {
-                return new EmptyResult();
-            }
+            string result = bookService.DeleteBookById(bookId);
 
-
+            return this.Json(result);
+   
         }
 
         public Boolean BookIdCorrect(string bookId)
@@ -149,7 +145,7 @@ namespace BookMamageSystem.Controllers
             {
                 TempData["readonly"] = true;
             }
-       
+
 
             return View(book);
         }
@@ -162,7 +158,7 @@ namespace BookMamageSystem.Controllers
             if (bookService.UpdateBook(book))
             {
                 TempData["message"] = "Update success";
-               
+
             }
             else
             {
@@ -192,16 +188,14 @@ namespace BookMamageSystem.Controllers
         public JsonResult GetBookRecordById(string bookId)
         {
 
-            JsonResult j = Json(bookService.GetBookRecordById(bookId));
-            return j;
+            return Json(bookService.GetBookRecordById(bookId));
         }
 
         [HttpPost]
         public JsonResult GetBookNameList()
         {
-            JsonResult j = Json(this.bookService.GetBookNameList());
 
-            return j;
+            return Json(this.bookService.GetBookNameList());
 
         }
 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Web;
 using System.Web.Management;
@@ -190,13 +191,44 @@ namespace BookMamageSystem.Models
 		}
 
 
-		/// <summary>
-		/// delete book by id
-		/// </summary>
-		public Boolean DeleteBookById(string bookId)
+
+        public Boolean CheckBookCanDelete(string bookId)
+        {
+            string sql = @"SELECT  BOOK_STATUS FROM BOOK_DATA
+                            WHERE BOOK_ID=@BookId";
+
+            string status;
+            using (SqlConnection conn = new SqlConnection(this.GetDBConnectionString()))
+            {
+                conn.Open();
+                SqlCommand cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.Add(new SqlParameter("@BookId", bookId));
+                status = cmd.ExecuteScalar().ToString();
+                conn.Close();
+            }
+
+            if (status == "A")
+            {
+                return true;
+            }
+            else
+            {
+                return false ;
+            }
+                
+        }
+
+        /// <summary>
+        /// delete book by id
+        /// </summary>
+        public string DeleteBookById(string bookId)
 		{
 			int success=0;
 
+            if (!CheckBookCanDelete(bookId))
+            {
+                return "Borrowed";
+            }
 
 
 			// 此地方以後需判斷 到底是狀態/能不能刪除????
@@ -221,12 +253,12 @@ namespace BookMamageSystem.Models
 
 			if (success > 0)
 			{
-				return true;
+				return "Success";
 			}
 			else
 			{
-				return false;
-			}
+                return "False";
+            }
 
 
 		}
