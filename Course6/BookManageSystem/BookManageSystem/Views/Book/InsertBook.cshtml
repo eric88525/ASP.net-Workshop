@@ -1,0 +1,105 @@
+﻿@model BookManageSystem.Model.Book
+
+@{
+    ViewBag.Title = "InsertBook";
+}
+
+<h2>新增書籍</h2>
+
+<form id="insertForm" method="post" action="/Book/InsertBook">
+    <div class="form-horizontal">
+        <h4></h4>
+        <hr />
+        <div class="form-group">
+
+            <div class="col-md-10">
+                <label>書名</label><br>
+                <input id="BookName" name="BookName" required maxlength="150" class="form-control" />
+
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <label>作者</label><br>
+                <input id="BookAuthor" name="BookAuthor" required maxlength="25" class="form-control" />
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <label>出版商</label><br>
+                <input id="BookPublisher" name="BookPublisher" maxlength="15" required class="form-control" />
+
+
+            </div>
+        </div>
+
+
+        <div class="form-group">
+
+            <div class="col-md-10">
+                <label>內容簡介</label><br>
+                <textarea id="BookNote" name="BookNote" required maxlength="1100" class="form-control"></textarea>
+
+            </div>
+        </div>
+
+
+
+        <div class="form-group">
+            <div class="col-md-10">
+                <label> 購書日期</label><br>
+                <input id="bought_datepicker" name="BookBoughtDate" title="datepicker" class="form-control" required />
+            </div>
+        </div>
+
+        <div class="form-group">
+
+            <div class="col-md-10">
+                <label> 圖書類別</label><br>
+                <select id="BookClass" name="BookClassId" class="form-control" required></select>
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            <input type="submit" value="新增書籍" class="btn btn-default" class="form-control" required />
+            <a class="btn btn-default" href="/Book/SearchBook">前往查詢書籍</a>
+
+            <div class="col-md-offset-2 col-md-10">
+
+            </div>
+        </div>
+
+
+    </div>
+</form>
+
+
+@if (TempData["message"] != null)
+{
+    <script type="text/javascript">
+        var message = @Html.Raw(Json.Encode(TempData["message"]));
+        alert(message);
+    </script>
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        // pick the book date
+        $("#bought_datepicker").kendoDatePicker({
+            //get today
+            value: new Date(),
+            format: "yyyy/MM/dd",
+            dateInput: true
+        });
+
+        var validator = $("#insertForm").kendoValidator().data("kendoValidator");
+
+    })
+
+
+</script>

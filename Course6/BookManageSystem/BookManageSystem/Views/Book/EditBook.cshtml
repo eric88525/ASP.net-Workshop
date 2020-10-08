@@ -1,0 +1,184 @@
+﻿
+@using System.Web.UI.WebControls
+@model BookManageSystem.Model.Book 
+@{
+    ViewBag.Title = "EditBook";
+    ViewBag.edit = @TempData["edit"];
+}
+
+@if (TempData["edit"] == null)
+{
+    <h2>檢視書籍資訊</h2>
+}
+else
+{
+    <h2>編輯書籍資訊</h2>
+}
+
+
+
+<form id="editForm" method="post" action="/Book/EditBook">
+    <input hidden="hidden" id="bookId" name="BookId" value=@Model.BookId />
+    <div class="form-horizontal">
+        <hr />
+        <div class="form-group">
+
+
+
+            <div class="form-group">
+                <label class="control-label col-md-2 ">書名</label>
+
+                <div class="col-md-10">
+                    <input id="BookName" name="BookName" value=@Model.BookName class="form-control InputItem" required maxlength="180"/>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2 ">作者</label>
+
+                <div class="col-md-10">
+                    <input id="BookAuthor" name="BookAuthor" class="form-control InputItem" value=@Model.BookAuthor required maxlength="25">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label col-md-2 ">出版商</label>
+
+                <div class="col-md-10">
+                    <input id="BookPublisher" name="BookPublisher" value=@Model.BookPublisher class="form-control InputItem" required max="15" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2 ">內容簡介</label>
+
+                <div class="col-md-10">
+                    <textarea id="BookNote" name="BookNote" value=@Model.BookNote class="form-control InputItem" required max="1100">@Model.BookNote</textarea>
+                </div>
+            </div>
+
+
+
+            <div class="form-group">
+                <label class="control-label col-md-2 ">購書日期</label>
+                <div class="col-md-10">
+
+                    <input class="DatePicker" name="BookBoughtDate" title="datepicker" value=@Model.BookBoughtDate class="form-control" required />
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <label class="control-label col-md-2 ">圖書類別</label>
+                <div class="col-md-10">
+                    <select id="BookClass" name="BookClassId" value=@Model.BookClassId required></select>
+                </div>
+            </div>
+
+            <div class="form-group">
+
+                <label class="control-label col-md-2 ">借閱狀態</label>
+                <div class="col-md-10">
+                    <select id="BookStatus" name="BookStatus" value=@Model.BookStatus required></select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label col-md-2 ">借閱者</label>
+                <div class="col-md-10">
+                    <select id="KeeperFullName" name="BookKeeperId" value=@Model.BookKeeperId></select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    @if (TempData["edit"] != null)
+                    {
+                        <input type="submit" value="儲存" class="btn btn-default" />
+                        <a id="btnDelete" class="btn btn-default"> 刪除</a>
+                        <a href="/Book/SearchBook" class="btn btn-default"> 返回搜尋</a>
+                    }
+                    else
+                    {
+                        <a href="/Book/SearchBook" class="btn btn-default"> 返回搜尋</a>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+@if (TempData["message"] != null)
+{
+    <script type="text/javascript">
+        var message = @Html.Raw(Json.Encode(TempData["message"]));
+        alert(message);
+    </script>
+}
+
+
+
+<script>
+   // var isReadonly =   @Json.Encode(TempData["readonly"]);
+    $(document).ready(function () {
+
+
+
+        $("#btnDelete").click(function (e) {
+            if (confirm("是否刪除?") == true) {
+                console.log($("#bookId").val());
+                e.preventDefault();
+                $.ajax({
+                    type: "POST",
+                    url: "/Book/DeleteBook",
+                    data: "bookId=" + $("#bookId").val(),
+                    dataType: "json",
+                    success: function (response) {
+                        alert("成功");
+                        window.location.href = "/Book/SearchBook";
+                    },
+                    error: function (error) {
+                        alert("此書無法刪除");
+                    }
+                });
+            } else {
+                alert("取消刪除");
+            }
+
+        });
+
+
+
+        if (isReadonly) {
+            var datepicker = $("#DatePicker").data("kendoDatePicker");
+
+            datepicker.readonly();
+        }
+
+        // check book status
+        function BookStatusCheck() {
+            var value = $("#BookStatus").data("kendoDropDownList").value();
+
+            if (value == 'B' || value == 'C') {
+                //required
+                $("#KeeperFullName").data("kendoDropDownList").readonly(false);
+                
+            } else {
+                // clear and readonly
+                $("#KeeperFullName").data("kendoDropDownList").value("");
+                $("#KeeperFullName").data("kendoDropDownList").readonly();
+                
+            }
+        }
+
+        $("#BookStatus").change(function() {
+            BookStatusCheck();
+        });
+
+        BookStatusCheck();
+    });
+
+</script>
+
+
+
+
